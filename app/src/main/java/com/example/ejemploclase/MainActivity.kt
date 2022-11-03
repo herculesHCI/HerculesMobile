@@ -1,45 +1,47 @@
 package com.example.ejemploclase
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.Image
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.ejemploclase.ui.theme.EjemploClaseTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             EjemploClaseTheme {
-                MainScreen(listOf("World","Compose"))
+                LogInScreen(listOf("World","Compose"))
             }
         }
     }
 }
 
 @Composable
-fun MainScreen(names: List<String>) {
+fun LogInScreen(names: List<String>) {
     // A surface container using the 'background' color from the theme
     Surface(//El surface es el equivalente al div
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.primary
     ) {
-        Column {
-            for(name in names){
-                Greeting(name = name)
-            }
+        Image(painter = painterResource(id = R.drawable.hercules),
+            contentDescription = null,
+            alignment = Alignment.TopEnd,
+            modifier = Modifier.fillMaxWidth().padding(vertical = 50.dp))
+        Row (modifier = Modifier.padding(vertical = 50.dp).sizeIn(minHeight = 200.dp)) {
+
         }
     }
 }
@@ -62,6 +64,6 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     EjemploClaseTheme {
-        MainScreen(listOf("World","Compose"))
+        LogInScreen(listOf("World","Compose"))
     }
 }

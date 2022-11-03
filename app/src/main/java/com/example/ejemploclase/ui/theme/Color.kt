@@ -2,6 +2,6 @@ package com.example.ejemploclase.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val LightGrey = Color(0xD9D9D9FF)
-val Grey = Color(0xFF605454)
-val Blue = Color(0xFF204DEE)
+val LightGrey = Color(red= 0xd9, green = 0xd9,blue = 0xd9)
+val Grey = Color(red = 0x60, green = 0x54, blue = 0x54 )
+val Blue = Color(red = 0x20, green = 0x4d, blue = 0xEE)
