@@ -4,6 +4,7 @@ import android.graphics.Paint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,11 +41,40 @@ fun SetupGraph()
     ) {
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color.White)){
+        .background(Color.White)
+        .padding(horizontal = 25.dp)){
         Column(){
+            val searchField = remember { mutableStateOf(TextFieldValue()) }
 
-            //Aca va a ir todo el contenido
-            
+            /** SEARCH BAR
+             * La dejo aca para acceder mas facil al text field cuando haga falta, se puede cambiar tranquilamente */
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp)
+                    .border(3.dp, Color.LightGray, RoundedCornerShape(5.dp))
+
+                    ,
+                label = {
+                    Row( ) {
+                        Icon(imageVector = Icons.Default.Search ,
+                            contentDescription = null)
+                        Text(text = "Search",
+                            modifier = Modifier.padding(horizontal = 10.dp))
+                        Spacer(modifier = Modifier.fillMaxWidth(.85f))
+                        Icon(imageVector = Icons.Default.List, /**CHANGE ICON HERE*/
+                            contentDescription = null,)
+
+                    }
+                    },
+                value = searchField.value,
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                onValueChange = { searchField.value = it },
+                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White, textColor = Color.Black)
+            )
+
+
         }
         
     }
@@ -101,4 +132,9 @@ fun BottomBar() {
                 selectedIndex.value = 2
             })
     }
+}
+
+@Composable
+fun SearchBar(){
+
 }
