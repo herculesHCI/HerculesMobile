@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
             EjemploClaseTheme {
                 navController = rememberNavController()
                 Surface {
-                 SetupGraph()
+                 //AppBar()
                 }
             }
         }
