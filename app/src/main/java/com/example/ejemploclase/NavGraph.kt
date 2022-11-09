@@ -4,6 +4,7 @@ import android.graphics.Paint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
@@ -74,6 +76,7 @@ fun SetupGraph()
                 colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White, textColor = Color.Black)
             )
 
+            WorkoutElement(item = "AndosWorkout")
 
         }
         
@@ -87,7 +90,7 @@ fun TopBar(){
     TopAppBar(
         backgroundColor = Color.LightGray,
         title = { Text( text = "Hercules") },
-        navigationIcon = {
+        actions = {
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
                     imageVector = Icons.Default.Settings ,
@@ -134,7 +137,42 @@ fun BottomBar() {
     }
 }
 
-@Composable
-fun SearchBar(){
 
+
+
+@Composable
+fun WorkoutElement(item: String) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .background(Color.LightGray, shape = RoundedCornerShape(5.dp))
+            .defaultMinSize()
+            .padding(10.dp)
+    ){
+        Row(){
+
+            Column(modifier = Modifier.weight(0.7f)) {
+                Row(){
+                    Text(text= ".... Workout", modifier = Modifier
+                        .padding(horizontal = 15.dp)
+                        .defaultMinSize())
+                    Icon(
+                        imageVector = Icons.Default.Star ,
+                        contentDescription = null
+                    )
+                }
+
+                Text(text="test\ntest\ntest\ntest\ntest\n" )
+
+            }
+
+            Column(){
+                Icon(
+                    imageVector = Icons.Default.AddCircle ,
+                    contentDescription = null
+                )
+            }
+
+        }
+    }
 }
