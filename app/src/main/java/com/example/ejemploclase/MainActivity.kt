@@ -1,10 +1,14 @@
 package com.example.ejemploclase
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.Surface
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ejemploclase.ui.theme.EjemploClaseTheme
@@ -21,10 +25,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             EjemploClaseTheme {
                 navController = rememberNavController()
-                Surface {
-                 SetupGraph()
-                }
+                SetupGraph(navController = navController)
             }
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)){view,insets ->
+            val bottom=insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            view.updatePadding(bottom=bottom)
+            insets
         }
 
     }
