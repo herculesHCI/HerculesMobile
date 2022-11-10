@@ -26,7 +26,7 @@ fun AppBar(function: @Composable () -> Unit)
 @Composable
 fun TopBar(){
     TopAppBar(
-        backgroundColor = Color.LightGray,
+        backgroundColor = MaterialTheme.colors.primary,
         title = { Text( text = "Hercules") },
         actions = {
             IconButton(onClick = { /*TODO*/ }) {
@@ -44,7 +44,7 @@ fun TopBar(){
 fun BottomBar() {
     val selectedIndex = remember { mutableStateOf(0) }
     BottomNavigation(elevation = 10.dp ,
-                    backgroundColor = Color.LightGray) {
+                    backgroundColor = MaterialTheme.colors.primary) {
 
         BottomNavigationItem(icon = {
             Icon(imageVector = Icons.Default.Home,"")
