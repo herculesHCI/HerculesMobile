@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-@Preview
+
 @Composable
 fun AppBar(function: @Composable () -> Unit)
 {
@@ -47,7 +47,7 @@ fun BottomBar() {
                     backgroundColor = MaterialTheme.colors.primary) {
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.Home,"")
+            Icon(imageVector = Icons.Default.Explore,"")
         },
             label = { Text(text = "Discover") },
             selected = (selectedIndex.value == 0),
@@ -56,7 +56,7 @@ fun BottomBar() {
             })
 
         BottomNavigationItem(icon = {
-            Icon(imageVector = Icons.Default.PlayArrow,"")
+            Icon(imageVector = Icons.Default.PlayCircle,"")
         },
             label = { Text(text = "Workout") },
             selected = (selectedIndex.value == 1),
