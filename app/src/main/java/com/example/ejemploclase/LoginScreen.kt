@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Preview()
 @Composable
-fun LogInScreen() {
+fun LogInScreen(    onClick: () -> Unit) {
     // A surface container using the 'background' color from the theme
 
     val coroutineScope= rememberCoroutineScope()
@@ -110,7 +110,7 @@ fun LogInScreen() {
             )
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { },
+                    onClick = {},
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .fillMaxWidth()
