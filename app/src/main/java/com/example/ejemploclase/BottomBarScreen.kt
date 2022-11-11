@@ -12,20 +12,20 @@ sealed class BottomBarScreen(
     val icon: ImageVector
 ) {
     object Home : BottomBarScreen(
-        route = "HOME",
-        title = "HOME",
+        route = "DISCOVER",
+        title = "DISCOVER",
         icon = Icons.Default.Home
     )
 
     object Profile : BottomBarScreen(
-        route = "PROFILE",
-        title = "PROFILE",
+        route = "WORKOUT",
+        title = "WORKOUT",
         icon = Icons.Default.Person
     )
 
     object Settings : BottomBarScreen(
-        route = "SETTINGS",
-        title = "SETTINGS",
+        route = "FAVORITES",
+        title = "FAVORITES",
         icon = Icons.Default.Settings
     )
 }

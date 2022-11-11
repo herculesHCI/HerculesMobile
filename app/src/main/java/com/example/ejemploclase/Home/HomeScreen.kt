@@ -1,65 +1,78 @@
 package com.example.ejemploclase.Home
 
+
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraphBuilder
+import androidx.compose.runtime.getValue
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.navigation
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.ejemploclase.BottomBarScreen
+import com.example.ejemploclase.graphs.HomeNavGraph
+
 
 @Composable
-fun HomeNavGraph(navController: NavHostController) {
-    NavHost(
-        navController = navController,
-        route = Graph.HOME,
-        startDestination = BottomBarScreen.Home.route
+fun HomeScreen(navController: NavHostController = rememberNavController()) {
+    Scaffold(
+        bottomBar = { BottomBar(navController = navController) }
     ) {
-        composable(route = BottomBarScreen.Home.route) {
-            ScreenContent(
-                name = BottomBarScreen.Home.route,
-                onClick = {
-                    navController.navigate(Graph.DETAILS)
-                }
-            )
-        }
-        composable(route = BottomBarScreen.Profile.route) {
-            ScreenContent(
-                name = BottomBarScreen.Profile.route,
-                onClick = { }
-            )
-        }
-        composable(route = BottomBarScreen.Settings.route) {
-            ScreenContent(
-                name = BottomBarScreen.Settings.route,
-                onClick = { }
-            )
-        }
-        detailsNavGraph(navController = navController)
+        HomeNavGraph(navController = navController)
     }
 }
 
-fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
-    navigation(
-        route = Graph.DETAILS,
-        startDestination = DetailsScreen.Information.route
-    ) {
-        composable(route = DetailsScreen.Information.route) {
-            ScreenContent(name = DetailsScreen.Information.route) {
-                navController.navigate(DetailsScreen.Overview.route)
-            }
-        }
-        composable(route = DetailsScreen.Overview.route) {
-            ScreenContent(name = DetailsScreen.Overview.route) {
-                navController.popBackStack(
-                    route = DetailsScreen.Information.route,
-                    inclusive = false
+@Composable
+fun BottomBar(navController: NavHostController) {
+    val screens = listOf(
+        BottomBarScreen.Home,
+        BottomBarScreen.Profile,
+        BottomBarScreen.Settings,
+    )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    val bottomBarDestination = screens.any { it.route == currentDestination?.route }
+    if (bottomBarDestination) {
+        BottomNavigation {
+            screens.forEach { screen ->
+                AddItem(
+                    screen = screen,
+                    currentDestination = currentDestination,
+                    navController = navController
                 )
             }
         }
     }
 }
 
-sealed class DetailsScreen(val route: String) {
-    object Information : DetailsScreen(route = "INFORMATION")
-    object Overview : DetailsScreen(route = "OVERVIEW")
+@Composable
+fun RowScope.AddItem(
+    screen: BottomBarScreen,
+    currentDestination: NavDestination?,
+    navController: NavHostController
+) {
+    BottomNavigationItem(
+        label = {
+            Text(text = screen.title)
+        },
+        icon = {
+            Icon(
+                imageVector = screen.icon,
+                contentDescription = "Navigation Icon"
+            )
+        },
+        selected = currentDestination?.hierarchy?.any {
+            it.route == screen.route
+        } == true,
+        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
+        onClick = {
+            navController.navigate(screen.route) {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
+        }
+    )
 }

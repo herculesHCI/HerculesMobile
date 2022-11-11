@@ -1,4 +1,4 @@
-package com.example.nestednavigationbottombardemo.graphs
+package com.example.ejemploclase.graphs
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
@@ -6,7 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.ejemploclase.graphs.Graph
+import com.example.ejemploclase.BottomBarScreen
+import com.example.ejemploclase.ScreenContent
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
@@ -35,32 +36,5 @@ fun HomeNavGraph(navController: NavHostController) {
                 onClick = { }
             )
         }
-        detailsNavGraph(navController = navController)
     }
-}
-
-fun NavGraphBuilder.detailsNavGraph(navController: NavHostController) {
-    navigation(
-        route = Graph.DETAILS,
-        startDestination = DetailsScreen.Information.route
-    ) {
-        composable(route = DetailsScreen.Information.route) {
-            ScreenContent(name = DetailsScreen.Information.route) {
-                navController.navigate(DetailsScreen.Overview.route)
-            }
-        }
-        composable(route = DetailsScreen.Overview.route) {
-            ScreenContent(name = DetailsScreen.Overview.route) {
-                navController.popBackStack(
-                    route = DetailsScreen.Information.route,
-                    inclusive = false
-                )
-            }
-        }
-    }
-}
-
-sealed class DetailsScreen(val route: String) {
-    object Information : DetailsScreen(route = "INFORMATION")
-    object Overview : DetailsScreen(route = "OVERVIEW")
 }
