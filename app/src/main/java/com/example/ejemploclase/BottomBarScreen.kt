@@ -12,7 +12,7 @@ sealed class BottomBarScreen(
     object Discover : BottomBarScreen(
         route = "DISCOVER",
         title = "Discover",
-        icon = Icons.Default.Search
+        icon = Icons.Default.Explore
     )
 
     object Workout : BottomBarScreen(

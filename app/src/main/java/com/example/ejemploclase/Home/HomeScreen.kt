@@ -1,12 +1,15 @@
 package com.example.ejemploclase.Home
 
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.Color.Companion.Blue
@@ -23,28 +26,31 @@ import com.example.ejemploclase.graphs.HomeNavGraph
 @Composable
 fun HomeScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(
-        topBar= { TopBar() },
+        topBar = { TopBar() },
         bottomBar = { BottomBar(navController = navController) }
-    ) {
-        HomeNavGraph(navController = navController)
+    ) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            HomeNavGraph(navController = navController)
+        }
     }
 }
 
 @Composable
-fun TopBar(){
+fun TopBar() {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.primary,
-        title = { Text( text = "Hercules") },
+        title = { Text(text = "Hercules") },
         actions = {
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
-                    imageVector = Icons.Default.Settings ,
+                    imageVector = Icons.Default.Settings,
                     contentDescription = null,
                 ) //Ver Como  mover hacia la derecha
             }
         }
     )
 }
+
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(

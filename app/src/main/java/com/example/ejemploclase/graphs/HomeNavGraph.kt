@@ -7,7 +7,6 @@ import androidx.navigation.compose.composable
 import com.example.ejemploclase.BottomBarScreen
 import com.example.ejemploclase.DiscoverScreen
 import com.example.ejemploclase.FavoriteScreen
-import com.example.ejemploclase.ScreenContent
 
 @Composable
 fun HomeNavGraph(navController: NavHostController) {
@@ -20,10 +19,10 @@ fun HomeNavGraph(navController: NavHostController) {
             DiscoverScreen()
         }
         composable(route = BottomBarScreen.Workout.route) {
-            ScreenContent(
-                name = BottomBarScreen.Workout.route,
-                onClick = { }
-            )
+//            ScreenContent(
+//                name = BottomBarScreen.Workout.route,
+//                onClick = { }
+//            )
         }
         composable(route = BottomBarScreen.Favorites.route) {
             FavoriteScreen()
