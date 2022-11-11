@@ -28,8 +28,11 @@ class Workout(
     fun getId() : Number {
         return id
     }
+    fun getCycles() : List<Cycle>? {
+        return cycles
+    }
 
-    fun setCylces(cycles: List<Cycle>?) {//la lista que recibo estaria ordenada
+    fun setCycles(cycles: List<Cycle>?) {//la lista que recibo estaria ordenada
         this.cycles = cycles
     }
 }

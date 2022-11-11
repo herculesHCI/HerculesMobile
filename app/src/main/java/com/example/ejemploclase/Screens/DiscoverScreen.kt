@@ -55,8 +55,8 @@ fun DiscoverContent(filter: Filter){
                     fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(onClick = { /*TODO*/ }) { //Deberia mandarte a la screen de filters
-                    //Icon(imageVector = Icons.Default.FilterList,
-                     //   contentDescription = null)
+                    Icon(imageVector = Icons.Default.FilterList,
+                        contentDescription = null)
                 }
             }
             for(item in items){
@@ -96,17 +96,19 @@ fun WorkoutElement(item: Workout) {
             Column(){
                 Row(verticalAlignment = Alignment.CenterVertically){
                     Text(text = item.getScore().toString(), textAlign =  TextAlign.Justify)
-                    //Icon(
-                       // imageVector = Icons.Default.StarBorder ,
-                       // contentDescription = null
-                    //)
+                    Icon(
+                        imageVector = Icons.Default.StarBorder ,
+                        contentDescription = null
+                    )
                     IconButton(onClick = { /*TODO*/ }) {//Deberia marcarlo como fav
                         if(item.getIsFav()){
                             Icon(imageVector = Icons.Default.Favorite,
-                                contentDescription = null)
+                                contentDescription = null,
+                                tint = MaterialTheme.colors.secondary)
                         } else {
                             Icon(imageVector = Icons.Default.FavoriteBorder,
-                                contentDescription = null)
+                                contentDescription = null,
+                                tint = MaterialTheme.colors.secondary)
                         }
                     }
                 }
