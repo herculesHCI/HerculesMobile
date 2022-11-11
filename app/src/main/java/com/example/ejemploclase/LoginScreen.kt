@@ -23,13 +23,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.Navigation
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Preview()
 @Composable
-fun LogInScreen() {
+fun LogInScreen(    onClick: () -> Unit) {
     // A surface container using the 'background' color from the theme
 
     val coroutineScope= rememberCoroutineScope()
@@ -68,8 +69,8 @@ fun LogInScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp)
-                    .onFocusEvent { event->
-                        if(event.isFocused){
+                    .onFocusEvent { event ->
+                        if (event.isFocused) {
                             coroutineScope.launch {
                                 bringIntoViewRequester.bringIntoView()
                             }
@@ -88,8 +89,8 @@ fun LogInScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp)
-                    .onFocusEvent { event->
-                        if(event.isFocused){
+                    .onFocusEvent { event ->
+                        if (event.isFocused) {
                             coroutineScope.launch {
                                 bringIntoViewRequester.bringIntoView()
                             }
@@ -110,7 +111,7 @@ fun LogInScreen() {
             )
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick = { },
+                    onClick={ onClick()},
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .fillMaxWidth()
