@@ -5,8 +5,10 @@ class Workout(
     private var author: String,
     private var score: Number,
     private var categoryName: String,
-    private var isFav: Boolean
+    private var isFav: Boolean,
+    private val id: Number
 ) {
+    private var cycles: List<Cycle>? = null
 
     fun getName() : String{
         return name
@@ -22,5 +24,12 @@ class Workout(
     }
     fun getIsFav() : Boolean {
         return isFav
+    }
+    fun getId() : Number {
+        return id
+    }
+
+    fun setCylces(cycles: List<Cycle>?) {//la lista que recibo estaria ordenada
+        this.cycles = cycles
     }
 }

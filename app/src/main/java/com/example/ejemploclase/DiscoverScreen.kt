@@ -31,15 +31,15 @@ fun DiscoverScreen(){
         DiscoverContent(Filter("Top kkita","Most Recent"))
     }
 }
-val items = listOf(Workout("Diego´s Workout","Ppeito",3.3,"Upper",true),
-    Workout("Nono´s Workout","Nono",6,"Arms",true),
-    Workout("Tute´s Workout","El MatiWodtke",10,"Abs",false),
-    Workout("New Workout","user1",0,"Legs",false),
-    Workout("Big arms","TheRock",9.8,"Arms",true),
-    Workout("Back Training","JeffNippard",7,"Back",false),
-    Workout("Full Body Strength","JohnSmith123",8.2,"Full Body",true),
-    Workout("Cardio Resistance","tourFanboy",6.7,"Cardio",false),
-    Workout("yeaaa buddy","RonnieColeman",4.3,"Legs",false)
+val items = listOf(Workout("Diego´s Workout","Ppeito",3.3,"Upper",true,0),
+    Workout("Nono´s Workout","Nono",6,"Arms",true,1),
+    Workout("Tute´s Workout","El MatiWodtke",10,"Abs",false,2),
+    Workout("New Workout","user1",0,"Legs",false,3),
+    Workout("Big arms","TheRock",9.8,"Arms",true,4),
+    Workout("Back Training","JeffNippard",7,"Back",false,5),
+    Workout("Full Body Strength","JohnSmith123",8.2,"Full Body",true,6),
+    Workout("Cardio Resistance","tourFanboy",6.7,"Cardio",false,7),
+    Workout("yeaaa buddy","RonnieColeman",4.3,"Legs",false,8)
 )
 
 @Composable
@@ -50,7 +50,8 @@ fun DiscoverContent(filter: Filter){
         .padding(horizontal = 25.dp)
         .verticalScroll(rememberScrollState())){
         Column(){
-            Row(verticalAlignment = Alignment.CenterVertically){
+            Row(verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(10.dp)){
                 Text(text= filter.getTitle(),
                     fontSize = 19.sp,
                     fontWeight = FontWeight.Bold)
