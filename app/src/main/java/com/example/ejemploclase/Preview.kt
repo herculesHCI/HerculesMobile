@@ -26,9 +26,7 @@ import androidx.compose.ui.unit.sp
 @Preview
 @Composable
 fun Preview(){
-    AppBar(){
         PreviewContent()
-    }
 }
 
 @Composable

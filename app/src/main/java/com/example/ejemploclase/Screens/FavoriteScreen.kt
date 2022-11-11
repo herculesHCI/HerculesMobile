@@ -21,9 +21,7 @@ import androidx.compose.ui.unit.sp
 @Preview
 @Composable
 fun FavoriteScreen(){
-    AppBar(){
         FavoriteContent()
-    }
 }
 
 val favItems = listOf(Workout("Diego´s Workout","Ppeito",3.3,"Upper",true,0),

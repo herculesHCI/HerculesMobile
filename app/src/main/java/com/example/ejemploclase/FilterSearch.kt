@@ -24,9 +24,7 @@ import java.util.logging.Filter
 @Preview
 @Composable
 fun Filter(){
-    AppBar(){
         FilterContent()
-    }
 }
 
 

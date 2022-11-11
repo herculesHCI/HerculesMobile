@@ -1,12 +1,12 @@
 package com.example.ejemploclase.graphs
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import com.example.ejemploclase.BottomBarScreen
+import com.example.ejemploclase.DiscoverScreen
+import com.example.ejemploclase.FavoriteScreen
 import com.example.ejemploclase.ScreenContent
 
 @Composable
@@ -14,27 +14,19 @@ fun HomeNavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = BottomBarScreen.Home.route
+        startDestination = BottomBarScreen.Discover.route
     ) {
-        composable(route = BottomBarScreen.Home.route) {
-            ScreenContent(
-                name = BottomBarScreen.Home.route,
-                onClick = {
-                    navController.navigate(Graph.DETAILS)
-                }
-            )
+        composable(route = BottomBarScreen.Discover.route) {
+            DiscoverScreen()
         }
-        composable(route = BottomBarScreen.Profile.route) {
+        composable(route = BottomBarScreen.Workout.route) {
             ScreenContent(
-                name = BottomBarScreen.Profile.route,
+                name = BottomBarScreen.Workout.route,
                 onClick = { }
             )
         }
-        composable(route = BottomBarScreen.Settings.route) {
-            ScreenContent(
-                name = BottomBarScreen.Settings.route,
-                onClick = { }
-            )
+        composable(route = BottomBarScreen.Favorites.route) {
+            FavoriteScreen()
         }
     }
 }

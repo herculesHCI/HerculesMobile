@@ -27,9 +27,7 @@ import androidx.compose.ui.unit.sp
 @Preview
 @Composable
 fun DiscoverScreen(){
-    AppBar(){
         DiscoverContent(Filter("Top kkita","Most Recent"))
-    }
 }
 val items = listOf(Workout("Diego´s Workout","Ppeito",3.3,"Upper",true,0),
     Workout("Nono´s Workout","Nono",6,"Arms",true,1),
@@ -57,8 +55,8 @@ fun DiscoverContent(filter: Filter){
                     fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(onClick = { /*TODO*/ }) { //Deberia mandarte a la screen de filters
-                    Icon(imageVector = Icons.Default.FilterList,
-                        contentDescription = null)
+                    //Icon(imageVector = Icons.Default.FilterList,
+                     //   contentDescription = null)
                 }
             }
             for(item in items){
@@ -98,10 +96,10 @@ fun WorkoutElement(item: Workout) {
             Column(){
                 Row(verticalAlignment = Alignment.CenterVertically){
                     Text(text = item.getScore().toString(), textAlign =  TextAlign.Justify)
-                    Icon(
-                        imageVector = Icons.Default.StarBorder ,
-                        contentDescription = null
-                    )
+                    //Icon(
+                       // imageVector = Icons.Default.StarBorder ,
+                       // contentDescription = null
+                    //)
                     IconButton(onClick = { /*TODO*/ }) {//Deberia marcarlo como fav
                         if(item.getIsFav()){
                             Icon(imageVector = Icons.Default.Favorite,

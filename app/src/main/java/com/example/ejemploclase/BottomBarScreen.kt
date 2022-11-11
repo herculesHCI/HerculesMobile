@@ -1,9 +1,7 @@
 package com.example.ejemploclase
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomBarScreen(
@@ -11,21 +9,21 @@ sealed class BottomBarScreen(
     val title: String,
     val icon: ImageVector
 ) {
-    object Home : BottomBarScreen(
+    object Discover : BottomBarScreen(
         route = "DISCOVER",
-        title = "DISCOVER",
-        icon = Icons.Default.Home
+        title = "Discover",
+        icon = Icons.Default.Search
     )
 
-    object Profile : BottomBarScreen(
+    object Workout : BottomBarScreen(
         route = "WORKOUT",
-        title = "WORKOUT",
-        icon = Icons.Default.Person
+        title = "Workout",
+        icon = Icons.Default.PlayArrow
     )
 
-    object Settings : BottomBarScreen(
+    object Favorites : BottomBarScreen(
         route = "FAVORITES",
-        title = "FAVORITES",
-        icon = Icons.Default.Settings
+        title = "Favorites",
+        icon = Icons.Default.Favorite
     )
 }

@@ -3,8 +3,13 @@ package com.example.ejemploclase.Home
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -18,6 +23,7 @@ import com.example.ejemploclase.graphs.HomeNavGraph
 @Composable
 fun HomeScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(
+        topBar= { TopBar() },
         bottomBar = { BottomBar(navController = navController) }
     ) {
         HomeNavGraph(navController = navController)
@@ -25,11 +31,26 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
 }
 
 @Composable
+fun TopBar(){
+    TopAppBar(
+        backgroundColor = MaterialTheme.colors.primary,
+        title = { Text( text = "Hercules") },
+        actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Default.Settings ,
+                    contentDescription = null,
+                ) //Ver Como  mover hacia la derecha
+            }
+        }
+    )
+}
+@Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
-        BottomBarScreen.Home,
-        BottomBarScreen.Profile,
-        BottomBarScreen.Settings,
+        BottomBarScreen.Discover,
+        BottomBarScreen.Workout,
+        BottomBarScreen.Favorites,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -61,13 +82,14 @@ fun RowScope.AddItem(
         icon = {
             Icon(
                 imageVector = screen.icon,
-                contentDescription = "Navigation Icon"
+                contentDescription = "Navigation Icon",
             )
         },
         selected = currentDestination?.hierarchy?.any {
             it.route == screen.route
         } == true,
-        unselectedContentColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
+        unselectedContentColor = Color.Black,
+        selectedContentColor = MaterialTheme.colors.secondary,
         onClick = {
             navController.navigate(screen.route) {
                 popUpTo(navController.graph.findStartDestination().id)
