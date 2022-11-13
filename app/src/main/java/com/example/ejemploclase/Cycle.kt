@@ -3,7 +3,7 @@ package com.example.ejemploclase
 class Cycle ( // No guardo el order, SIEMPRE PEDIR CYCLE EN ORDER ASC
         private var name: String,
         private var type: String,
-        private var repetitions: Number,
+        private var repetitions: Int,
         private var routineId: Number //Capaz no es util
         ) {
         private var exercises: List<Exercise>? = null
@@ -14,7 +14,7 @@ class Cycle ( // No guardo el order, SIEMPRE PEDIR CYCLE EN ORDER ASC
         fun getType() : String {
                 return type
         }
-        fun getRepetitions() : Number {
+        fun getRepetitions() : Int {
                 return repetitions
         }
         fun getExercises() : List<Exercise>? {
