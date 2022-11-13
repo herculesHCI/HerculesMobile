@@ -31,7 +31,7 @@ fun PreviewScreen(){
             Exercise("Jumping Jacks", 5,10 ),
             Exercise("Jumping Jacks", 5,10 ) ))
 
-    workout.setCycles( listOf(cycle, cycle,cycle) )
+    workout.setCycles( arrayOf(cycle, cycle,cycle) )
 
     Box( modifier = Modifier.background(MaterialTheme.colors.background)){
 

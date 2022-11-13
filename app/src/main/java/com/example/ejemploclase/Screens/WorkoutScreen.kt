@@ -8,10 +8,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Checklist
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Preview
 @Composable
@@ -45,7 +44,7 @@ fun setWorkout(){
     )
     val coolDownCycle = Cycle("Enlongacion","Cooldown",3,0)
     coolDownCycle.setExercises(coolDownExercises)
-    workout.setCycles(listOf(warmUpCycle,commonCycle,coolDownCycle))
+    workout.setCycles(arrayOf(warmUpCycle,commonCycle,coolDownCycle))
 }
 
 @Composable
@@ -74,10 +73,7 @@ fun WorkoutContent(workout: Workout?) {
                 )
             }
         } else {
-            val warmupCycleSize = workout.getCycles()!![0].getExercises()?.size
-            val commonCycleSize = workout.getCycles()!![1].getExercises()?.size
-            val cooldownCycleSize = workout.getCycles()!![2].getExercises()?.size
-            //val warmupCheckStates = remember { mutableStateListOf<Boolean>(false)}
+            val viewmodel = viewModel<WorkoutViewModel>()
             Column(modifier = Modifier.background(Color.LightGray)) {
                 Row(
                     modifier = Modifier.padding(15.dp),
@@ -104,39 +100,126 @@ fun WorkoutContent(workout: Workout?) {
                     )
                 }
                 Row() {
-                    Column() {
-                        for (cycle in workout.getCycles()!!) {
-                            Row(modifier = Modifier.padding(15.dp, 10.dp)) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(Color.White) //Poner de vuelta el del theme
-                                        .padding(15.dp)
-                                        .clip(RoundedCornerShape(10.dp))
-                                ) {
-                                    Column() {
-                                        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
-                                            Text(
-                                                text = cycle.getName(),
-                                                fontSize = 23.sp
-                                            )
-                                            Spacer(modifier = Modifier.weight(1f))
-                                            Text(
-                                                text = cycle.getRepetitions().toString(),
-                                                fontSize = 23.sp
-                                            )
-                                        }
-                                        for(exercise in cycle.getExercises()!!){
-                                            Row(modifier = Modifier.padding(15.dp,3.dp)){
-                                                LabelledCheckbox(checked = false, onCheckedChange = {/*TODO*/}, label = exercise.getName())
-                                            }
-                                        }
-                                    }
-                                }
+                    Column {
+                        Row(modifier = Modifier.padding(15.dp, 10.dp)){
+                            Box(modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.White) //Poner de vuelta el del theme
+                                .padding(15.dp)
+                                .clip(RoundedCornerShape(10.dp))){
+                                warmUpCycle(cycle = workout.getWarmupCycle(), viewmodel = viewmodel)
+                            }
+                        }
+                        Row(modifier = Modifier.padding(15.dp, 10.dp)){
+                            Box(modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.White) //Poner de vuelta el del theme
+                                .padding(15.dp)
+                                .clip(RoundedCornerShape(10.dp))){
+                                commonCycle(cycle = workout.getCommonCycle(), viewmodel = viewmodel)
+                            }
+                        }
+                        Row(modifier = Modifier.padding(15.dp, 10.dp)){
+                            Box(modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.White) //Poner de vuelta el del theme
+                                .padding(15.dp)
+                                .clip(RoundedCornerShape(10.dp))){
+                                cooldownCycle(cycle = workout.getCooldownCycle(), viewmodel = viewmodel)
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun warmUpCycle(cycle: Cycle,viewmodel: WorkoutViewModel){
+    viewmodel.initializeWarmup(cycle.getExercises()!!.size)
+    val reps by viewmodel.repsCyclesWarmup.collectAsState()
+    Column() {
+        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
+            Text(
+                text = cycle.getName(),
+                fontSize = 23.sp
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = reps.toString(),
+                fontSize = 23.sp
+            )
+        }
+        for(exercise in cycle.getExercises()!!){
+            val checkedState = rememberSaveable { mutableStateOf(false) }
+            Row(modifier = Modifier.padding(15.dp,3.dp)){
+                LabelledCheckbox(checked = checkedState.value,
+                    onCheckedChange = { if(checkedState.value == false){
+                        checkedState.value = it
+                        viewmodel.decrementWarmup()
+                    }},
+                    label = exercise.getName())
+            }
+        }
+    }
+}
+
+@Composable
+fun commonCycle(cycle: Cycle,viewmodel: WorkoutViewModel){
+    viewmodel.initializeCommon(cycle.getExercises()!!.size)
+    val reps by viewmodel.repsCyclesCommon.collectAsState()
+    Column() {
+        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
+            Text(
+                text = cycle.getName(),
+                fontSize = 23.sp
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = reps.toString(),
+                fontSize = 23.sp
+            )
+        }
+        for(exercise in cycle.getExercises()!!){
+            val checkedState = rememberSaveable { mutableStateOf(false) }
+            Row(modifier = Modifier.padding(15.dp,3.dp)){
+                LabelledCheckbox(checked = checkedState.value,
+                    onCheckedChange = { if(checkedState.value == false){
+                        checkedState.value = it
+                        viewmodel.decrementCommon()
+                    }},
+                    label = exercise.getName())
+            }
+        }
+    }
+}
+
+@Composable
+fun cooldownCycle(cycle: Cycle,viewmodel: WorkoutViewModel){
+    viewmodel.initializeCooldown(cycle.getExercises()!!.size)
+    val reps by viewmodel.repsCyclesCooldown.collectAsState()
+    Column() {
+        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
+            Text(
+                text = cycle.getName(),
+                fontSize = 23.sp
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = reps.toString(),
+                fontSize = 23.sp
+            )
+        }
+        for(exercise in cycle.getExercises()!!){
+            val checkedState = rememberSaveable { mutableStateOf(false) }
+            Row(modifier = Modifier.padding(15.dp,3.dp)){
+                LabelledCheckbox(checked = checkedState.value,
+                    onCheckedChange = { if(checkedState.value == false){
+                        checkedState.value = it
+                        viewmodel.decrementCooldown()
+                    }},
+                    label = exercise.getName())
             }
         }
     }
@@ -166,3 +249,46 @@ fun LabelledCheckbox(
         )
     }
 }
+
+/*
+* Row() {
+                    Column {
+                        for (cycle in workout.getCycles()!!) {
+                            Row(modifier = Modifier.padding(15.dp, 10.dp)) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(Color.White) //Poner de vuelta el del theme
+                                        .padding(15.dp)
+                                        .clip(RoundedCornerShape(10.dp))
+                                ) {
+                                    Column() {
+                                        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
+                                            Text(
+                                                text = cycle.getName(),
+                                                fontSize = 23.sp
+                                            )
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            Text(
+                                                text = reps.toString(),
+                                                fontSize = 23.sp
+                                            )
+                                        }
+                                        for(exercise in cycle.getExercises()!!){
+                                            val checkedState = rememberSaveable { mutableStateOf(false) }
+                                            Row(modifier = Modifier.padding(15.dp,3.dp)){
+                                                LabelledCheckbox(checked = checkedState.value,
+                                                    onCheckedChange = { if(checkedState.value == false){
+                                                                            checkedState.value = it
+                                                                            viewmodel.decrement()
+                                                                      }},
+                                                    label = exercise.getName())
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }*/

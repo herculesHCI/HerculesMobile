@@ -8,7 +8,7 @@ class Workout(
     private var isFav: Boolean,
     private val id: Number
 ) {
-    private var cycles: List<Cycle>? = null
+    private var cycles: Array<Cycle>? = null
 
     fun getName() : String{
         return name
@@ -28,11 +28,20 @@ class Workout(
     fun getId() : Number {
         return id
     }
-    fun getCycles() : List<Cycle>? {
+    fun getCycles() : Array<Cycle>? {
         return cycles
     }
+    fun getWarmupCycle() : Cycle {
+        return cycles!![0]
+    }
+    fun getCommonCycle() : Cycle {
+        return cycles!![1]
+    }
+    fun getCooldownCycle() : Cycle {
+        return cycles!![2]
+    }
 
-    fun setCycles(cycles: List<Cycle>?) {//la lista que recibo estaria ordenada
+    fun setCycles(cycles: Array<Cycle>?) {//la lista que recibo estaria ordenada
         this.cycles = cycles
     }
 }
