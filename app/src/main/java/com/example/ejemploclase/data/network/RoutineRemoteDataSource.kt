@@ -11,7 +11,7 @@ class RoutineRemoteDataSource(
 
     suspend fun getRoutines(orderBy: String?, direction: String?, categoryId: Int?) : NetworkPagedContent<NetworkRoutine> {
         return handleApiResponse {
-            apiRoutineService.getRoutines(orderBy,direction,categoryId)
+            apiRoutineService.getRoutines(categoryId,orderBy,direction,)
         }
     }
 
