@@ -1,4 +1,4 @@
-package com.example.ejemploclase
+package com.example.ejemploclase.data.model
 
 class Exercise ( // No guardo el order, SIEMPRE PEDIR CYCLE EXERCISES EN ORDER ASC
     private var name: String,
