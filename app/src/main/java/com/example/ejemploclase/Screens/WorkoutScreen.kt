@@ -19,15 +19,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.example.ejemploclase.data.model.*
 
-@Preview
+
 @Composable
-fun WorkoutScreen(){
-    setWorkout()
-    WorkoutContent(workout)
+fun WorkoutScreen(navController: NavHostController){
+    AppBar(navController) {
+        setWorkout()
+        WorkoutContent(workout)
+    }
 }
 
-val workout  = Workout("Diego´s Workout","Ppeito",3.3,"Upper",true,0)
+val workout  = Workout(4,"Pepito",3.3, Category(4,"Abs", "abdominal wok"), User(1,"Sancho","San","Agustin"," ", null ),true)
+
 
 fun setWorkout(){
     val warmUpExercises = listOf(Exercise("Bicycle",180,0),Exercise("Jumping Jacks",60,0),
@@ -51,11 +56,11 @@ fun setWorkout(){
 fun WorkoutContent(workout: Workout?) {
     Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 25.dp, 15.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .verticalScroll(rememberScrollState())
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(horizontal = 25.dp, 15.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .verticalScroll(rememberScrollState())
     ) {
         if (workout == null) {
             Column() {
@@ -80,21 +85,21 @@ fun WorkoutContent(workout: Workout?) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = workout.getName(),
+                        text = workout.name,
                         fontSize = 30.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
                 Row(modifier = Modifier.padding(15.dp, 5.dp)) {
                     Text(
-                        text = workout.getCategoryName(),
+                        text = workout.category.name,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
                 Row(modifier = Modifier.padding(15.dp, 5.dp)) {
                     Text(
-                        text = "by ".plus(workout.getAuthor()),
+                        text = "by ".plus(workout.user.username),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -103,28 +108,28 @@ fun WorkoutContent(workout: Workout?) {
                     Column {
                         Row(modifier = Modifier.padding(15.dp, 10.dp)){
                             Box(modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.White) //Poner de vuelta el del theme
-                                .padding(15.dp)
-                                .clip(RoundedCornerShape(10.dp))){
+                                    .fillMaxWidth()
+                                    .background(Color.White) //Poner de vuelta el del theme
+                                    .padding(15.dp)
+                                    .clip(RoundedCornerShape(10.dp))){
                                 WarmUpCycle(cycle = workout.getWarmupCycle(), viewmodel = viewmodel)
                             }
                         }
                         Row(modifier = Modifier.padding(15.dp, 10.dp)){
                             Box(modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.White) //Poner de vuelta el del theme
-                                .padding(15.dp)
-                                .clip(RoundedCornerShape(10.dp))){
+                                    .fillMaxWidth()
+                                    .background(Color.White) //Poner de vuelta el del theme
+                                    .padding(15.dp)
+                                    .clip(RoundedCornerShape(10.dp))){
                                 CommonCycle(cycle = workout.getCommonCycle(), viewmodel = viewmodel)
                             }
                         }
                         Row(modifier = Modifier.padding(15.dp, 10.dp)){
                             Box(modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.White) //Poner de vuelta el del theme
-                                .padding(15.dp)
-                                .clip(RoundedCornerShape(10.dp))){
+                                    .fillMaxWidth()
+                                    .background(Color.White) //Poner de vuelta el del theme
+                                    .padding(15.dp)
+                                    .clip(RoundedCornerShape(10.dp))){
                                 CooldownCycle(cycle = workout.getCooldownCycle(), viewmodel = viewmodel)
                             }
                         }

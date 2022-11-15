@@ -12,19 +12,26 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.ejemploclase.data.model.*
 
 
-@Preview
+
 @Composable
-fun PreviewScreen(){
-    var workout = Workout("Big Mucle Factory Baby", "Big Daddy", 7.5 ,
-            "Chest", false  , 4 )
+fun PreviewScreen(navController: NavHostController , workoutId : Int? ){
+    AppBar(navController) {
+        PreviewContent()
+    }
+}
+
+@Composable
+fun PreviewContent(){
+    var workout =      Workout(4,"Pepito",3.3, Category(4,"Abs", "abdominal wok"), User(1,"Sancho","San","Agustin"," ", null ),true)
+
 
     var cycle = Cycle("x Cycle", "abs", 7 , 3 )
     cycle.setExercises( listOf( Exercise("Jumping Jacks", 5,10 ) ,
@@ -67,7 +74,7 @@ fun PreviewScreen(){
 
                     Text(
                             modifier = Modifier.padding(top=7.dp),
-                            text= workout.getCategoryName(),
+                            text= workout.category.name,
                             fontSize = 25.sp,
                             fontWeight = FontWeight.Bold
                     )
@@ -80,7 +87,7 @@ fun PreviewScreen(){
 
                     Text(
                             modifier = Modifier.padding(top=7.dp),
-                            text= workout.getScore().toString(),
+                            text= workout.score.toString(),
                             fontSize = 25.sp,
                             fontWeight = FontWeight.Bold
                     )
@@ -96,13 +103,13 @@ fun PreviewScreen(){
 
 
                 Text(
-                        text= workout.getName(),
+                        text= workout.name,
                         fontSize = 35.sp,
                         fontWeight = FontWeight.Bold
                 )
 
                 Text(
-                        text = "by " + workout.getAuthor(),
+                        text = "by " + workout.user.username,
                         fontSize = 25.sp,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(vertical = 10.dp)
@@ -127,7 +134,9 @@ fun PreviewScreen(){
                                     fontSize = 20.sp,
                             )
                         }
-                        Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
+                        Spacer(modifier = Modifier
+                                .fillMaxWidth()
+                                .height(20.dp))
                     }
 
                 }

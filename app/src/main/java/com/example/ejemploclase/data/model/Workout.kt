@@ -23,6 +23,8 @@ data class Workout(
         return cycles!![2]
     }
 
+
+
     fun setCycles(cycles: Array<Cycle>?) {//la lista que recibo estaria ordenada
         this.cycles = cycles
     }
