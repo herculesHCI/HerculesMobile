@@ -20,23 +20,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.ejemploclase.data.model.Category
 import com.example.ejemploclase.data.model.User
 import com.example.ejemploclase.data.model.Workout
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
+import com.example.ejemploclase.ui.main.canGetRoutines
 
-@Preview
 @Composable
-fun DiscoverScreen(viewModel: MainViewModel = viewModel(factory = getViewModelFactory())){
-        DiscoverContent(Filter("Top kkita","Most Recent"),viewModel)
+fun DiscoverScreen(viewModel: MainViewModel = viewModel(factory = getViewModelFactory()),navController: NavHostController){
+    AppBar(navController) {
+        DiscoverContent(Filter("Top kkita","Most Recent"),viewModel,navController)
+    }
 }
 
 @Composable
-fun DiscoverContent(filter: Filter,viewModel: MainViewModel){
+fun DiscoverContent(filter: Filter,viewModel: MainViewModel,navController: NavHostController){
     viewModel.login("","")// TODO borrar despues
     viewModel.getRoutines("date","asc",null)
-    if(viewModel.uiState.routines != null){
+    if(viewModel.uiState.canGetRoutines){
         Box(modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
@@ -56,7 +59,7 @@ fun DiscoverContent(filter: Filter,viewModel: MainViewModel){
                 }
                 for(item in viewModel.uiState.routines!!){
                     Row(modifier = Modifier.padding(10.dp)){
-                        WorkoutElement(item = item)
+                        WorkoutElement(item = item,navController)
                     }
                 }
             }
@@ -67,7 +70,7 @@ fun DiscoverContent(filter: Filter,viewModel: MainViewModel){
 }
 
 @Composable
-fun WorkoutElement(item: Workout) {
+fun WorkoutElement(item: Workout,navController: NavHostController) {
     Box(
         Modifier
             .fillMaxWidth()
@@ -79,7 +82,9 @@ fun WorkoutElement(item: Workout) {
             Column(modifier = Modifier.weight(0.7f)) {
                 Row(){
                     ClickableText(text= AnnotatedString(item.name) // tiene fontSize = 17.sp
-                        ,onClick = {/*TODO Hacer que cambie de screen*/} )
+                        ,onClick = {
+                            navController.navigate("preview/${item.id}")
+                        } )
                 }
                 Row(){
                     Text(text= item.category.name,

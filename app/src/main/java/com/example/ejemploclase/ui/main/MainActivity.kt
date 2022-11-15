@@ -3,10 +3,10 @@ package com.example.ejemploclase.ui.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -17,7 +17,7 @@ import com.example.ejemploclase.DiscoverScreen
 import com.example.ejemploclase.FavoriteScreen
 import com.example.ejemploclase.PreviewScreen
 import com.example.ejemploclase.WorkoutScreen
-import com.example.ejemploclase.data.model.Workout
+import com.example.ejemploclase.data.network.util.getViewModelFactory
 
 
 class MainActivity : ComponentActivity() {
@@ -30,9 +30,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
+            val viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
             NavHost(navController = navController, startDestination = "discover" ){
                 composable("discover"){
-                    DiscoverScreen(navController)
+                    DiscoverScreen(viewModel,navController)
                 }
                 composable("favorite"){
                     FavoriteScreen(navController)
@@ -45,13 +46,9 @@ class MainActivity : ComponentActivity() {
                     navBackStackEntry ->
                     val id = navBackStackEntry.arguments?.getInt("workoutId")
                     requireNotNull(id)
-                    PreviewScreen(navController, id )
+                    PreviewScreen(navController, id ,viewModel)
                 }
             }
-            //La main screen deberia recibir el siguiente parametro
-            //(
-            //    viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
-            //)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)){view,insets ->
