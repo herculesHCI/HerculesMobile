@@ -44,6 +44,7 @@ class MainActivity : ComponentActivity() {
                            arguments = listOf(navArgument("workoutId") {type = NavType.IntType} ) ){
                     navBackStackEntry ->
                     val id = navBackStackEntry.arguments?.getInt("workoutId")
+                    requireNotNull(id)
                     PreviewScreen(navController, id )
                 }
             }
