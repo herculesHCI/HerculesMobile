@@ -7,7 +7,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Checklist
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Cancel
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -19,15 +21,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
 import com.example.ejemploclase.WorkoutViewModel
 import com.example.ejemploclase.data.model.*
+import com.example.ejemploclase.data.network.util.getViewModelFactory
+import com.example.ejemploclase.ui.main.MainViewModel
 
 
 @Composable
-fun WorkoutScreen(navController: NavHostController){
+fun WorkoutScreen(navController: NavHostController, viewModel: MainViewModel = viewModel(factory = getViewModelFactory()) ){
     com.example.ejemploclase.AppBar(navController) {
         setWorkout()
-        WorkoutContent(workout)
+        WorkoutContent(workout, navController, viewModel)
     }
 }
 
@@ -52,107 +57,271 @@ fun setWorkout(){
     workout.setCycles(arrayOf(warmUpCycle,commonCycle,coolDownCycle))
 }
 
+
 @Composable
-fun WorkoutContent(workout: Workout?) {
-    Box(
-        modifier = Modifier
+fun WorkoutContent(workout: Workout?, navController: NavHostController, viewModel: MainViewModel) {
+    Box(modifier = Modifier.fillMaxSize()){
+        /**
+         * hasStarted has three posible values:
+         * 0 if the wokout wasnt started,
+         * 1 if it was started,
+         * 2 if its finished
+         */
+        val hasStarted = remember { mutableStateOf(0) }
+        Box(
+            modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(MaterialTheme.colors.background)
                 .padding(horizontal = 25.dp, 15.dp)
-                .clip(RoundedCornerShape(10.dp))
+                .padding(bottom = 60.dp)
+
                 .verticalScroll(rememberScrollState())
-    ) {
-        if (workout == null) {
-            Column() {
-                Row(modifier = Modifier.padding(15.dp)) {
-                    Text(
-                        text = "Choose a workout from your favorites to start training",
-                        fontSize = 50.sp,
-                        fontWeight = FontWeight.Bold
+        ) {
+
+
+            if (workout == null) {
+                Column() {
+                    Row(modifier = Modifier.padding(15.dp)) {
+                        Text(
+                            text = "Choose a workout from your favorites to start training",
+                            fontSize = 50.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                    Icon(
+                        imageVector = Icons.Default.Checklist,
+                        contentDescription = null,
+                        modifier = Modifier.size(64.dp),
                     )
                 }
-                Icon(
-                    imageVector = Icons.Default.Checklist,
-                    contentDescription = null,
-                    modifier = Modifier.size(64.dp)
-                )
-            }
-        } else {
-            val viewmodel = viewModel<WorkoutViewModel>()
-            Column(modifier = Modifier.background(Color.LightGray)) {
-                Row(
-                    modifier = Modifier.padding(15.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = workout.name,
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Row(modifier = Modifier.padding(15.dp, 5.dp)) {
-                    Text(
-                        text = workout.category.name,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Row(modifier = Modifier.padding(15.dp, 5.dp)) {
-                    Text(
-                        text = "by ".plus(workout.user.username),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Row() {
-                    Column {
-                        Row(modifier = Modifier.padding(15.dp, 10.dp)){
-                            Box(modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.White) //Poner de vuelta el del theme
-                                    .padding(15.dp)
-                                    .clip(RoundedCornerShape(10.dp))){
-                                WarmUpCycle(cycle = workout.getWarmupCycle(), viewmodel = viewmodel)
-                            }
+            } else {
+
+                    val viewmodel = viewModel<WorkoutViewModel>()
+                    Column(modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colors.primary)
+                        ) {
+                        if( hasStarted.value==1 || hasStarted.value==0 ){
+                        Row(
+                            modifier = Modifier.padding(15.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = workout.name,
+                                fontSize = 30.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colors.background
+                            )
                         }
-                        Row(modifier = Modifier.padding(15.dp, 10.dp)){
-                            Box(modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.White) //Poner de vuelta el del theme
-                                    .padding(15.dp)
-                                    .clip(RoundedCornerShape(10.dp))){
-                                CommonCycle(cycle = workout.getCommonCycle(), viewmodel = viewmodel)
-                            }
+                        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
+                            Text(
+                                text = workout.category.name,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colors.background
+                            )
                         }
-                        Row(modifier = Modifier.padding(15.dp, 10.dp)){
-                            Box(modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.White) //Poner de vuelta el del theme
-                                    .padding(15.dp)
-                                    .clip(RoundedCornerShape(10.dp))){
-                                CooldownCycle(cycle = workout.getCooldownCycle(), viewmodel = viewmodel)
-                            }
+                        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
+                            Text(
+                                text = "by ".plus(workout.user.username),
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colors.background
+                            )
                         }
-                        if(viewmodel.isDone){
-                            Row(modifier = Modifier.padding(15.dp,10.dp)){
-                                TextButton(onClick = { /*TODO pushearlo a la view de favs*/ },
-                                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary,
-                                        contentColor = Color.White),
-                                    shape = RoundedCornerShape(20.dp)
-                                ) {
-                                    Text(
-                                        text="Finish Workout",
-                                        fontWeight = FontWeight.Bold
-                                    )
+                        Row() {
+                            Column {
+                                Row(modifier = Modifier.padding(15.dp, 10.dp)){
+                                    Box(modifier = Modifier
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .fillMaxWidth()
+                                        .background(MaterialTheme.colors.background)
+                                        .padding(15.dp)
+                                        ){
+                                        WarmUpCycle(cycle = workout.getWarmupCycle(), viewmodel = viewmodel)
+                                    }
+                                }
+                                Row(modifier = Modifier.padding(15.dp, 10.dp)){
+                                    Box(modifier = Modifier
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .fillMaxWidth()
+                                        .background(MaterialTheme.colors.background) //Poner de vuelta el del theme
+                                        .padding(15.dp)
+                                        ){
+                                        CommonCycle(cycle = workout.getCommonCycle(), viewmodel = viewmodel)
+                                    }
+                                }
+                                Row(modifier = Modifier.padding(15.dp, 10.dp)){
+                                    Box(modifier = Modifier
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .fillMaxWidth()
+                                        .background(MaterialTheme.colors.background) //Poner de vuelta el del theme
+                                        .padding(15.dp)
+                                        ){
+                                        CooldownCycle(cycle = workout.getCooldownCycle(), viewmodel = viewmodel)
+                                    }
+                                }
+                                if(viewmodel.isDone){
+                                    Row(modifier = Modifier.padding(15.dp,10.dp)){
+                                        TextButton(onClick = { /*TODO pushearlo a la view de favs*/ },
+                                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary,
+                                                contentColor = MaterialTheme.colors.primary),
+                                            shape = RoundedCornerShape(20.dp)
+                                        ) {
+                                            Text(
+                                                text="Finish Workout",
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
+
+                        if(hasStarted.value == 1 ){  //TODO center correctly
+                            Spacer(Modifier.weight(1f))
+
+                            Row(){
+                                Button(
+                                    onClick = {
+                                        hasStarted.value = 2
+                                    }) {
+                                    Text(text = "Finish Workout",
+                                        fontSize = 30.sp)
+                                }
+                            }
+
+                            Spacer(Modifier.weight(1f))
+                        }
+
+
+                    }
+                        if(hasStarted.value == 2 ){
+                            Column(modifier = Modifier
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(MaterialTheme.colors.primary)
+                                .padding(15.dp)
+                            ) {
+                                val stars = remember { mutableStateOf(0)}
+                                Row(){
+                                    IconButton(onClick = {
+                                        hasStarted.value = 1
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Default.ArrowBack,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colors.background,
+                                            modifier = Modifier
+                                                .padding(15.dp)
+                                                .size(40.dp)
+                                        )
+                                    }
+
+                                    IconButton(onClick = {
+                                        navController.navigate("discover")
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.Close,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colors.background,
+                                            modifier = Modifier
+                                                .padding(15.dp)
+                                                .size(40.dp)
+                                        )
+                                    }
+                                }
+
+
+                                    Text(text="Workout Finished",
+                                        color = MaterialTheme.colors.background)
+
+                                    Text(
+                                        text = workout.name,
+                                        fontSize = 30.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colors.background
+                                    )
+
+                                    Text(
+                                        text = "by ".plus(workout.user.username),
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colors.background
+                                    )
+
+                                    Text(
+                                        text = "Rate the Workout!",
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colors.background
+                                    )
+
+                                    Row(){
+                                        for( i in 1..5 ){
+                                            IconButton(onClick = {
+                                                stars.value = i
+                                            }) {
+                                                var col = MaterialTheme.colors.background;
+                                                if (stars.value >= i ) {
+                                                    col = MaterialTheme.colors.secondary
+                                                }
+                                                Icon(
+                                                    imageVector = Icons.Default.Star,
+                                                    contentDescription = null,
+                                                    tint =  col ,
+                                                    modifier = Modifier
+                                                        .padding(15.dp)
+                                                        .size(40.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+
+                                    Button(
+                                        onClick = {
+                                            //TODO Llamar a la api para subir el score
+                                            navController.navigate("discover")
+                                        }) {
+                                        Text(text = "Sumbit Rating",
+                                            fontSize = 30.sp,
+                                            color = MaterialTheme.colors.background)
+                                    }
+                            }
                     }
                 }
+
+
             }
         }
+        if( hasStarted.value == 0 ){
+            FloatingActionButton(
+                onClick = {
+                    hasStarted.value = 1
+                },
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colors.background,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(bottom = 75.dp)
+                    .padding(horizontal = 15.dp)
+                    .size(65.dp)
+            ) {
+                // on below line we are
+                // adding icon for button.
+                Icon(
+                    imageVector = Icons.Default.PlayArrow,
+                    contentDescription = null,
+                )
+            }
+        }
+
     }
+
 }
+
+
+
+
 
 
 @Composable
