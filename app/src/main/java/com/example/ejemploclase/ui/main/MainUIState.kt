@@ -12,6 +12,7 @@ data class MainUiState(
     val currentSport: Sport? = null,
     val routines: List<Workout>? = null,
     val currentRoutine: Workout? = null,
+    val favouritesRoutines: List<Workout>? = null,
     val message: String? = null
 )
 
@@ -23,3 +24,6 @@ val MainUiState.canModifySport: Boolean get() = isAuthenticated && currentSport 
 val MainUiState.canDeleteSport: Boolean get() = canModifySport
 val MainUiState.canGetRoutines: Boolean get() = isAuthenticated && routines != null
 val MainUiState.canGetRoutine: Boolean get() = isAuthenticated && currentRoutine != null
+val MainUiState.canGetFavourites: Boolean get() = isAuthenticated && favouritesRoutines != null
+val MainUiState.canMarkFavourite: Boolean get() = isAuthenticated
+val MainUiState.canDeleteFavourite: Boolean get() = isAuthenticated

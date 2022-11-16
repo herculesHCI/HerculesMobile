@@ -19,7 +19,6 @@ import androidx.navigation.NavHostController
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
 import com.example.ejemploclase.ui.main.canGetRoutine
-import com.example.ejemploclase.workout
 
 
 @Composable

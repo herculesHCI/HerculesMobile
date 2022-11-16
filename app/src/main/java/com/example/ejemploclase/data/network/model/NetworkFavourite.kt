@@ -5,7 +5,7 @@ import com.example.ejemploclase.data.model.User
 import com.example.ejemploclase.data.model.Workout
 import com.google.gson.annotations.SerializedName
 
-class NetworkRoutine (
+class NetworkFavourite (
 
     @SerializedName("id")
     var id: Int,
@@ -24,6 +24,7 @@ class NetworkRoutine (
             name,
             score,
             category,
-            user)
+            user,
+            true)
     }
 }

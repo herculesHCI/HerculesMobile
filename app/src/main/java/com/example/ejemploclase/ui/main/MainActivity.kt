@@ -13,10 +13,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.ejemploclase.DiscoverScreen
-import com.example.ejemploclase.FavoriteScreen
-import com.example.ejemploclase.PreviewScreen
-import com.example.ejemploclase.WorkoutScreen
+import com.example.ejemploclase.screens.DiscoverScreen
+import com.example.ejemploclase.screens.FavoriteScreen
+import com.example.ejemploclase.screens.PreviewScreen
+import com.example.ejemploclase.screens.WorkoutScreen
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 
 
@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     DiscoverScreen(viewModel,navController)
                 }
                 composable("favorite"){
-                    FavoriteScreen(navController)
+                    FavoriteScreen(navController,viewModel)
                 }
                 composable("workout"){
                     WorkoutScreen(navController)

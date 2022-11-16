@@ -1,4 +1,4 @@
-package com.example.ejemploclase
+package com.example.ejemploclase.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -21,16 +21,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.*
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.Navigation
-import kotlinx.coroutines.coroutineScope
+import com.example.ejemploclase.R
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
-@Preview()
 @Composable
-fun LogInScreen(    onClick: () -> Unit) {
+fun LogInScreen( onClick: () -> Unit ) {
     // A surface container using the 'background' color from the theme
 
     val coroutineScope= rememberCoroutineScope()
