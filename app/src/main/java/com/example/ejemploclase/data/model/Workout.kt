@@ -13,6 +13,9 @@ data class Workout(
     fun getCycles() : Array<Cycle>? {
         return cycles
     }
+    fun hasCycles() : Boolean {
+        return cycles != null
+    }
     fun getWarmupCycle() : Cycle {
         return cycles!![0]
     }

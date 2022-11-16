@@ -21,5 +21,5 @@ val MainUiState.canGetCurrentSport: Boolean get() = isAuthenticated && currentSp
 val MainUiState.canAddSport: Boolean get() = isAuthenticated && currentSport == null
 val MainUiState.canModifySport: Boolean get() = isAuthenticated && currentSport != null
 val MainUiState.canDeleteSport: Boolean get() = canModifySport
-val MainUiState.canGetRoutines: Boolean get() = isAuthenticated
+val MainUiState.canGetRoutines: Boolean get() = isAuthenticated && routines != null
 val MainUiState.canGetRoutine: Boolean get() = isAuthenticated && currentRoutine != null

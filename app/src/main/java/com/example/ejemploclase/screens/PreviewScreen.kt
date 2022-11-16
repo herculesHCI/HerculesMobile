@@ -1,4 +1,4 @@
-package com.example.ejemploclase
+package com.example.ejemploclase.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,14 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.ejemploclase.data.model.*
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
 import com.example.ejemploclase.ui.main.canGetRoutine
+import com.example.ejemploclase.workout
 
 
 @Composable
@@ -28,8 +27,8 @@ fun PreviewScreen(navController: NavHostController , workoutId : Int?,viewModel:
     factory = getViewModelFactory()
 )
 ){
-    AppBar(navController) {
-        PreviewContent(navController,workoutId,viewModel)
+    com.example.ejemploclase.AppBar(navController) {
+        PreviewContent(navController, workoutId, viewModel)
     }
 }
 
@@ -42,7 +41,7 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
         viewModel.getRoutine(workoutId)
         if(viewModel.uiState.canGetRoutine){
             Box( modifier = Modifier.background(MaterialTheme.colors.background)){
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { /*TODO volver a Discover*/ }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = null,
@@ -67,17 +66,18 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                         Row( modifier = Modifier
                             .fillMaxWidth()
                         ){
-                            Text(
-                                modifier = Modifier.padding(top=7.dp),
-                                text= workout.category.name,
-                                fontSize = 25.sp,
-                                fontWeight = FontWeight.Bold
-                            )
+                            viewModel.uiState.currentRoutine?.name?.let {
+                                Text(
+                                    text= it,
+                                    fontSize = 35.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                             Spacer( modifier = Modifier
                                 .weight(1f))
                             Text(
                                 modifier = Modifier.padding(top=7.dp),
-                                text= workout.score.toString(),
+                                text= viewModel.uiState.currentRoutine?.score.toString(),
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -89,38 +89,45 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                     .padding(top = 5.dp),
                             )
                         }
+                        viewModel.uiState.currentRoutine?.category?.let { //Se hizo el chequeo antes
+                            Text(                               //pero no permite hacerlo sin el let
+                                modifier = Modifier.padding(top=7.dp),
+                                text= it.name,
+                                fontSize = 25.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                         Text(
-                            text= workout.name,
-                            fontSize = 35.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "by " + workout.user.username,
+                            text = "by " + viewModel.uiState.currentRoutine?.user?.username,
                             fontSize = 25.sp,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(vertical = 10.dp)
                         )
-                        Column(
-                            modifier = Modifier
-                                .verticalScroll(rememberScrollState())
-                                .padding(top = 15.dp)
-                        ) {
-                            workout.getCycles()?.forEach { cyc ->
-                                Text(
-                                    text = cyc.getName(),
-                                    fontSize = 22.sp,
-                                    fontWeight = FontWeight.Medium
-                                )
-                                cyc.getExercises()?.forEach(){ ex ->
+                        if(viewModel.uiState.currentRoutine?.hasCycles() == true){
+                            Column(
+                                modifier = Modifier
+                                    .verticalScroll(rememberScrollState())
+                                    .padding(top = 15.dp)
+                            ) {
+                                workout.getCycles()?.forEach { cyc ->
                                     Text(
-                                        text = ex.getName(),
-                                        fontSize = 20.sp,
+                                        text = cyc.getName(),
+                                        fontSize = 22.sp,
+                                        fontWeight = FontWeight.Medium
                                     )
+                                    cyc.getExercises()?.forEach(){ ex ->
+                                        Text(
+                                            text = ex.getName(),
+                                            fontSize = 20.sp,
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(20.dp))
                                 }
-                                Spacer(modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(20.dp))
                             }
+                        } else {
+                            // TODO ERROR_MSG La rutina no tiene ciclos ni ejercicios
                         }
                         Spacer(modifier = Modifier.height(50.dp))
                     }
@@ -129,8 +136,5 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
         }
     }
     // TODO Mensaje de error
-
-
-
 }
 
