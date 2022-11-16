@@ -27,17 +27,32 @@ import com.example.ejemploclase.ui.main.MainViewModel
 import com.example.ejemploclase.ui.main.canGetRoutines
 
 @Composable
-fun DiscoverScreen(navController: NavHostController,viewModel: MainViewModel = viewModel(factory = getViewModelFactory())){
+fun DiscoverScreen(navController: NavHostController,filterName: String? = "Highest Rated",viewModel: MainViewModel = viewModel(factory = getViewModelFactory())){
+    if(filters.isEmpty()){
+        filters.put("Back",Filter("score","desc",1,"Back Workouts"))
+        filters.put("Legs",Filter("score","desc",2,"Leg Workouts"))
+        filters.put("Push",Filter("score","desc",3,"Push Workouts"))
+        filters.put("Pull",Filter("score","desc",4,"Pull Workouts"))
+        filters.put("Upper",Filter("score","desc",5,"Upper Workouts"))
+        filters.put("Abs",Filter("score","desc",6,"Ab Workouts"))
+        filters.put("Arms",Filter("score","desc",7,"Arm Workouts"))
+        filters.put("Cardio",Filter("score","desc",8,"Cardio Workouts"))
+        filters.put("Full Body",Filter("score","desc",9,"Full Body Workouts"))
+        filters.put("Most Recent", Filter("date","desc",null,"Most Recent Created"))
+        filters.put("Highest Rated", Filter("score","desc",null,"Highest Rated"))
+        filters.put("Oldest Workouts", Filter("date","asc",null,"Oldest Workouts"))
+    }
     com.example.ejemploclase.AppBar(navController) {
-        DiscoverContent(Filter("Top kkita", "Most Recent"), viewModel, navController)
+        filters[filterName]?.let { DiscoverContent(it, viewModel, navController) }
     }
 }
+val filters : HashMap<String,Filter> = HashMap<String,Filter>()
 
 @Composable
 fun DiscoverContent(filter: Filter, viewModel: MainViewModel, navController: NavHostController){
     val uiState = viewModel.uiState
     if(!uiState.canGetRoutines){
-        viewModel.getRoutines("date","asc",null)
+        viewModel.getRoutines(filter.orderBy,filter.direction,filter.categoryId)
         // TODO ERR_MSG si routines es NULL
     }
     Box(modifier = Modifier
@@ -48,11 +63,13 @@ fun DiscoverContent(filter: Filter, viewModel: MainViewModel, navController: Nav
         Column(){
             Row(verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(10.dp)){
-                Text(text= filter.getTitle(),
+                Text(text= filter.title,
                     fontSize = 19.sp,
                     fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = { /*TODO*/ }) { //Deberia mandarte a la screen de filters
+                IconButton(onClick = {
+                    navController.navigate("filter")
+                }) { //Deberia mandarte a la screen de filters
                     Icon(imageVector = Icons.Default.FilterList,
                         contentDescription = null)
                 }

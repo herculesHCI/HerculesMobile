@@ -13,52 +13,65 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.ejemploclase.screens.DiscoverScreen
-import com.example.ejemploclase.screens.FavoriteScreen
-import com.example.ejemploclase.screens.PreviewScreen
-import com.example.ejemploclase.screens.WorkoutScreen
+import com.example.ejemploclase.Filter
+import com.example.ejemploclase.FilterScreen
 import com.example.ejemploclase.data.network.util.getViewModelFactory
+import com.example.ejemploclase.screens.*
 
 
 class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
             val viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
-            if(!viewModel.uiState.isAuthenticated){
-                viewModel.login("","")//TODO desharcodear
+            if (!viewModel.uiState.isAuthenticated) {
+                viewModel.login("bot1","1")
+                com.example.ejemploclase.AppBar(navController) {
+                    LogInScreen()
+                }
+            } else {
+                val initialDestination = "Back"
+                NavHost(navController = navController, startDestination = "discover") {
+                    composable(route = "discover/{filterName}",
+                        arguments = listOf(navArgument("filterName") {
+                            type = NavType.StringType
+                        })
+                    ) { navBackStackEntry ->
+                        val name = navBackStackEntry.arguments?.getString("filterName","Highest Rated")
+                        DiscoverScreen(navController, name)
+                    }
+                    composable(route = "discover") {
+                        DiscoverScreen(navController, "Highest Rated")
+                    }
+                    composable("favorite") {
+                        FavoriteScreen(navController)
+                    }
+                    composable("workout") {
+                        WorkoutScreen(navController)
+                    }
+                    composable("filter"){
+                        FilterScreen(navController)
+                    }
+                    composable(route = "preview/{workoutId}",
+                        arguments = listOf(navArgument("workoutId") {
+                            type = NavType.IntType
+                        })) { navBackStackEntry ->
+                        val id = navBackStackEntry.arguments?.getInt("workoutId")
+                        requireNotNull(id)
+                        PreviewScreen(navController, id)
+                    }
+                }
             }
-            NavHost(navController = navController, startDestination = "discover" ){
-                composable("discover"){
-                    DiscoverScreen(navController)
-                }
-                composable("favorite"){
-                    FavoriteScreen(navController)
-                }
-                composable("workout"){
-                    WorkoutScreen(navController)
-                }
-                composable(route = "preview/{workoutId}",
-                           arguments = listOf(navArgument("workoutId") {type = NavType.IntType} ) ){
-                    navBackStackEntry ->
-                    val id = navBackStackEntry.arguments?.getInt("workoutId")
-                    requireNotNull(id)
-                    PreviewScreen(navController, id )
-                }
+
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view, insets ->
+                val bottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+                view.updatePadding(bottom = bottom)
+                insets
             }
         }
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)){view,insets ->
-            val bottom=insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-            view.updatePadding(bottom=bottom)
-            insets
-        }
-
     }
 }

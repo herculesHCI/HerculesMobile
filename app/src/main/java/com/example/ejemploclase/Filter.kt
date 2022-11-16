@@ -1,14 +1,8 @@
 package com.example.ejemploclase
 
-class Filter(
-    private var filter: String = "Top Rated",// TODO ver como se guarda los filtros y ponerlos en un enum
-    private var title: String = "Top Rated"
-){
-
-    fun getFilter() : String{
-        return filter
-    }
-    fun getTitle() : String{
-        return title
-    }
-}
+data class Filter(
+    var orderBy: String = "date",
+    var direction: String = "asc",
+    var categoryId: Int? = null,
+    var title: String = "Most Recent Created",
+)
