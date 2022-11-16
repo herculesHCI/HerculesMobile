@@ -1,4 +1,4 @@
-package com.example.ejemploclase
+package com.example.ejemploclase.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,57 +16,58 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.ejemploclase.data.model.Category
-import com.example.ejemploclase.data.model.User
+import com.example.ejemploclase.Filter
 import com.example.ejemploclase.data.model.Workout
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
 import com.example.ejemploclase.ui.main.canGetRoutines
 
 @Composable
-fun DiscoverScreen(viewModel: MainViewModel = viewModel(factory = getViewModelFactory()),navController: NavHostController){
-    AppBar(navController) {
-        DiscoverContent(Filter("Top kkita","Most Recent"),viewModel,navController)
+fun DiscoverScreen(navController: NavHostController,viewModel: MainViewModel = viewModel(factory = getViewModelFactory())){
+    com.example.ejemploclase.AppBar(navController) {
+        DiscoverContent(Filter("Top kkita", "Most Recent"), viewModel, navController)
     }
 }
 
 @Composable
-fun DiscoverContent(filter: Filter,viewModel: MainViewModel,navController: NavHostController){
-    viewModel.login("","")// TODO borrar despues
-    viewModel.getRoutines("date","asc",null)
-    if(viewModel.uiState.canGetRoutines){
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 25.dp)
-            .verticalScroll(rememberScrollState())){
-            Column(){
-                Row(verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(10.dp)){
-                    Text(text= filter.getTitle(),
-                        fontSize = 19.sp,
-                        fontWeight = FontWeight.Bold)
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO*/ }) { //Deberia mandarte a la screen de filters
-                        Icon(imageVector = Icons.Default.FilterList,
-                            contentDescription = null)
-                    }
+fun DiscoverContent(filter: Filter, viewModel: MainViewModel, navController: NavHostController){
+    val uiState = viewModel.uiState
+    if(!uiState.canGetRoutines){
+        viewModel.getRoutines("date","asc",null)
+        // TODO ERR_MSG si routines es NULL
+    }
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)
+        .padding(horizontal = 25.dp)
+        .verticalScroll(rememberScrollState())){
+        Column(){
+            Row(verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(10.dp)){
+                Text(text= filter.getTitle(),
+                    fontSize = 19.sp,
+                    fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = { /*TODO*/ }) { //Deberia mandarte a la screen de filters
+                    Icon(imageVector = Icons.Default.FilterList,
+                        contentDescription = null)
                 }
-                for(item in viewModel.uiState.routines!!){
+            }
+            if(uiState.routines != null){
+                for(item in uiState.routines){
                     Row(modifier = Modifier.padding(10.dp)){
                         WorkoutElement(item = item,navController)
                     }
                 }
             }
-
         }
+
     }
-    // TODO Error message
+
 }
 
 @Composable

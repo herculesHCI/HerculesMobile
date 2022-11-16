@@ -37,10 +37,13 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
 )
 ){
     if(workoutId != null){
-        viewModel.getRoutine(workoutId)
+        val uiState = viewModel.uiState
+        if(uiState.currentRoutine == null){
+            viewModel.getRoutine(workoutId)
+        }
         if(viewModel.uiState.canGetRoutine){
             Box( modifier = Modifier.background(MaterialTheme.colors.background)){
-                IconButton(onClick = { /*TODO volver a Discover*/ }) {
+                IconButton(onClick = { /*TODO volver a Discover o Fav*/ }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = null,
@@ -134,6 +137,6 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
             }
         }
     }
-    // TODO Mensaje de error
+    // TODO Mensaje de error con el routineId pasado
 }
 

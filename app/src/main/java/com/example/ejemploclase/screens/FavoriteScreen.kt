@@ -25,8 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.ejemploclase.AppBar
-import com.example.ejemploclase.data.model.Category
-import com.example.ejemploclase.data.model.User
 import com.example.ejemploclase.data.model.Workout
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
@@ -35,9 +33,7 @@ import com.example.ejemploclase.ui.main.canGetFavourites
 
 
 @Composable
-fun FavoriteScreen(navController: NavHostController,viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-    factory = getViewModelFactory()
-)
+fun FavoriteScreen(navController: NavHostController,viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
 ) {
     AppBar(navController) {
         FavoriteContent(navController,viewModel)
@@ -49,7 +45,11 @@ fun FavoriteContent(navController: NavHostController,viewModel: MainViewModel = 
     factory = getViewModelFactory()
 )
 ){
-    viewModel.getFavorites()
+    val uiState = viewModel.uiState
+    if(uiState.favouritesRoutines == null){
+        viewModel.getFavorites()
+        // TODO ERR_MSG No tiene favoritos o error en conexion con la api
+    }
     if(viewModel.uiState.canGetFavourites){
         Box(modifier = Modifier
             .fillMaxSize()
@@ -70,7 +70,7 @@ fun FavoriteContent(navController: NavHostController,viewModel: MainViewModel = 
             }
 
         }
-    } // TODO ERR_MSG No tiene favoritos o error en conexion con la api
+    }
 }
 
 @Composable
@@ -96,7 +96,7 @@ fun WorkoutFavElement(item: Workout,navController: NavHostController,viewModel: 
                         fontSize = 12.sp)
                 }
                 Row(){
-                    Text(text= "By ".plus(item.name),
+                    Text(text= "By ".plus(item.user.username),
                         fontSize = 12.sp)
                 }
             }

@@ -262,6 +262,7 @@ class MainViewModel(
             uiState = uiState.copy(
                 isFetching = false,
             )
+            uiState.favouritesRoutines?.drop(routineId)
         }.onFailure { e ->
             // Handle the error and notify the UI when appropriate.
             uiState = uiState.copy(

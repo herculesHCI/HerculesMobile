@@ -31,12 +31,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
+            if(!viewModel.uiState.isAuthenticated){
+                viewModel.login("","")//TODO desharcodear
+            }
             NavHost(navController = navController, startDestination = "discover" ){
                 composable("discover"){
-                    DiscoverScreen(viewModel,navController)
+                    DiscoverScreen(navController)
                 }
                 composable("favorite"){
-                    FavoriteScreen(navController,viewModel)
+                    FavoriteScreen(navController)
                 }
                 composable("workout"){
                     WorkoutScreen(navController)
@@ -46,7 +49,7 @@ class MainActivity : ComponentActivity() {
                     navBackStackEntry ->
                     val id = navBackStackEntry.arguments?.getInt("workoutId")
                     requireNotNull(id)
-                    PreviewScreen(navController, id ,viewModel)
+                    PreviewScreen(navController, id )
                 }
             }
         }
