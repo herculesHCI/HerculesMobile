@@ -43,7 +43,9 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
         }
         if(viewModel.uiState.canGetRoutine){
             Box( modifier = Modifier.background(MaterialTheme.colors.background)){
-                IconButton(onClick = { /*TODO volver a Discover o Fav*/ }) {
+                IconButton(onClick = {
+                    navController.navigateUp()
+                }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = null,

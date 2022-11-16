@@ -23,20 +23,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import com.example.ejemploclase.R
+import com.example.ejemploclase.data.network.util.getViewModelFactory
+import com.example.ejemploclase.ui.main.MainViewModel
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LogInScreen( onClick: () -> Unit ) {
+fun LogInScreen( viewModel: MainViewModel = viewModel(factory = getViewModelFactory())) {
     // A surface container using the 'background' color from the theme
 
-    val coroutineScope= rememberCoroutineScope()
-    val focusManager= LocalFocusManager.current
-    val bringIntoViewRequester= BringIntoViewRequester()
+    val coroutineScope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+    val bringIntoViewRequester = BringIntoViewRequester()
 
-    Surface(//El surface es el equivalente al div
+    Surface(
         modifier = Modifier.fillMaxSize(),
-        color =MaterialTheme.colors.primary
+        color = MaterialTheme.colors.primary
     ) {
 
 
@@ -72,16 +76,19 @@ fun LogInScreen( onClick: () -> Unit ) {
                                 bringIntoViewRequester.bringIntoView()
                             }
                         }
-                    }
-                ,
+                    },
                 label = { Text(text = "Username") },
                 value = username.value,
                 onValueChange = { username.value = it },
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White, textColor = Color.Black),
-                keyboardOptions=KeyboardOptions(
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    textColor = Color.Black
+                ),
+                keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
-                    imeAction=ImeAction.Next
-            ))
+                    imeAction = ImeAction.Next
+                )
+            )
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -97,18 +104,23 @@ fun LogInScreen( onClick: () -> Unit ) {
                 value = password.value,
                 visualTransformation = PasswordVisualTransformation(),
                 onValueChange = { password.value = it },
-                colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.White, textColor = Color.Black),
-                keyboardOptions=KeyboardOptions(
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    textColor = Color.Black
+                ),
+                keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
-                    imeAction=ImeAction.Done
+                    imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone={focusManager.clearFocus()}
+                    onDone = { focusManager.clearFocus() }
                 )
             )
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
-                    onClick={ onClick()},
+                    onClick = {
+                              viewModel.login(username.value.toString(),password.value.toString())
+                    },
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .fillMaxWidth()

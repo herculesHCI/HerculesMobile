@@ -13,7 +13,8 @@ data class MainUiState(
     val routines: List<Workout>? = null,
     val currentRoutine: Workout? = null,
     val favouritesRoutines: List<Workout>? = null,
-    val message: String? = null
+    val message: String? = null,
+    val favChanged: Boolean = false
 )
 
 val MainUiState.canGetCurrentUser: Boolean get() = isAuthenticated

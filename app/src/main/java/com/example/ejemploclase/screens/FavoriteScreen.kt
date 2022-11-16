@@ -46,7 +46,7 @@ fun FavoriteContent(navController: NavHostController,viewModel: MainViewModel = 
 )
 ){
     val uiState = viewModel.uiState
-    if(uiState.favouritesRoutines == null){
+    if(uiState.favouritesRoutines == null || uiState.favChanged){
         viewModel.getFavorites()
         // TODO ERR_MSG No tiene favoritos o error en conexion con la api
     }
@@ -115,7 +115,9 @@ fun WorkoutFavElement(item: Workout,navController: NavHostController,viewModel: 
                             tint = MaterialTheme.colors.secondary
                         )
                     }
-                    IconButton(onClick = {/*TODO*/}) { //Deberia pasar a la screen de workout
+                    IconButton(onClick = {
+                        navController.navigate("workout/${item.id}")
+                    }) { //Deberia pasar a la screen de workout
                         Icon(imageVector = Icons.Default.PlayArrow,
                             contentDescription = null,
                             tint = MaterialTheme.colors.secondary

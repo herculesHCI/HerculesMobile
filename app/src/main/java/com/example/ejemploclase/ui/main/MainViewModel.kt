@@ -30,7 +30,7 @@ class MainViewModel(
             message = null
         )
         runCatching {
-            userRepository.login("bot1", "1") // TODO HARDCODDEOOOO
+            userRepository.login(username, password) // TODO HARDCODDEOOOO
         }.onSuccess { response ->
             uiState = uiState.copy(
                 isFetching = false,
@@ -222,7 +222,8 @@ class MainViewModel(
         }.onSuccess { response ->
             uiState = uiState.copy(
                 isFetching = false,
-                favouritesRoutines = response
+                favouritesRoutines = response,
+                favChanged = false
             )
         }.onFailure { e ->
             // Handle the error and notify the UI when appropriate.
@@ -242,6 +243,7 @@ class MainViewModel(
         }.onSuccess { response ->
             uiState = uiState.copy(
                 isFetching = false,
+                favChanged = true
             )
         }.onFailure { e ->
             // Handle the error and notify the UI when appropriate.
@@ -257,10 +259,11 @@ class MainViewModel(
             message = null
         )
         runCatching {
-            favoriteRepository.markFavourite(routineId)
+            favoriteRepository.deleteFavourite(routineId)
         }.onSuccess { response ->
             uiState = uiState.copy(
                 isFetching = false,
+                favChanged = true
             )
             uiState.favouritesRoutines?.drop(routineId)
         }.onFailure { e ->
