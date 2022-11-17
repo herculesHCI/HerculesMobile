@@ -115,7 +115,7 @@ fun WorkoutElement(item: Workout,navController: NavHostController) {
             }
             Column(){
                 Row(verticalAlignment = Alignment.CenterVertically){
-                    Text(text = item.score.toString(), textAlign =  TextAlign.Justify)
+                    Text(text = item.getScore().toString(), textAlign =  TextAlign.Justify)
                     Icon(
                         imageVector = Icons.Default.StarBorder ,
                         contentDescription = null

@@ -1,6 +1,5 @@
 package com.example.ejemploclase.data.repository
 
-import com.example.ejemploclase.data.model.Sport
 import com.example.ejemploclase.data.model.Workout
 import com.example.ejemploclase.data.network.RoutineRemoteDataSource
 import kotlinx.coroutines.sync.Mutex
@@ -27,6 +26,10 @@ class RoutineRepository(
     }
 
     suspend fun getRoutine(routineId: Int) : Workout {
-        return remoteDataSource.getSport(routineId).asModel()
+        return remoteDataSource.getRoutine(routineId).asModel()
+    }
+
+    suspend fun makeRoutineReview(routineId: Int,rating: Int) {
+        remoteDataSource.makeRoutineReview(routineId,rating)
     }
 }

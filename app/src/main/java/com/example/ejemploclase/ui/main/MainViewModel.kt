@@ -274,4 +274,24 @@ class MainViewModel(
         }
     }
 
+    fun makeReview(routineId: Int,rating: Int) = viewModelScope.launch {
+        uiState = uiState.copy(
+            isFetching = true,
+            message = null
+        )
+        runCatching {
+            routineRepository.makeRoutineReview(routineId,rating)
+        }.onSuccess { response ->
+            uiState = uiState.copy(
+                isFetching = false,
+                favChanged = true
+            )
+        }.onFailure { e ->
+            // Handle the error and notify the UI when appropriate.
+            uiState = uiState.copy(
+                message = e.message,
+                isFetching = false)
+        }
+    }
+
 }

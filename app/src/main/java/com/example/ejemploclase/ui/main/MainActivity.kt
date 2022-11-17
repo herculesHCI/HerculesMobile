@@ -13,7 +13,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.ejemploclase.Filter
 import com.example.ejemploclase.FilterScreen
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.screens.*
@@ -34,7 +33,6 @@ class MainActivity : ComponentActivity() {
                     LogInScreen()
                 }
             } else {
-                val initialDestination = "Back"
                 NavHost(navController = navController, startDestination = "discover") {
                     composable(route = "discover/{filterName}",
                         arguments = listOf(navArgument("filterName") {
@@ -50,8 +48,17 @@ class MainActivity : ComponentActivity() {
                     composable("favorite") {
                         FavoriteScreen(navController)
                     }
-                    composable("workout") {
-                        WorkoutScreen(navController)
+                    composable(route = "workout/{workoutId}",
+                        arguments = listOf(navArgument("workoutId") {
+                            type = NavType.IntType
+                        })) { navBackStackEntry ->
+                        val id = navBackStackEntry.arguments?.getInt("workoutId",0)
+                        if (id != null) {
+                            WorkoutScreen(navController,id)
+                        }
+                    }
+                    composable(route = "workout") {
+                        WorkoutScreen(navController,0)
                     }
                     composable("filter"){
                         FilterScreen(navController)

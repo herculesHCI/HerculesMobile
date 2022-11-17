@@ -3,13 +3,16 @@ package com.example.ejemploclase.data.model
 data class Workout(
     val id: Int,
     var name: String,
-    var score: Number,
+    private var score: Number,
     var category: Category,
     var user: User,
     var isFav: Boolean? = false,
 ) {
     private var cycles: Array<Cycle>? = null
 
+    fun getScore() : Float {
+        return score.toFloat()/2
+    }
     fun getCycles() : Array<Cycle>? {
         return cycles
     }
@@ -25,9 +28,6 @@ data class Workout(
     fun getCooldownCycle() : Cycle {
         return cycles!![2]
     }
-
-
-
     fun setCycles(cycles: Array<Cycle>?) {//la lista que recibo estaria ordenada
         this.cycles = cycles
     }

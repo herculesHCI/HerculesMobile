@@ -42,6 +42,7 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
             viewModel.getRoutine(workoutId)
         }
         if(viewModel.uiState.canGetRoutine){
+            val workout = viewModel.uiState.currentRoutine
             Box( modifier = Modifier.background(MaterialTheme.colors.background)){
                 IconButton(onClick = {
                     navController.navigateUp()
@@ -70,7 +71,7 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                         Row( modifier = Modifier
                             .fillMaxWidth()
                         ){
-                            viewModel.uiState.currentRoutine?.name?.let {
+                            workout?.name?.let {
                                 Text(
                                     text= it,
                                     fontSize = 35.sp,
@@ -81,7 +82,7 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                 .weight(1f))
                             Text(
                                 modifier = Modifier.padding(top=7.dp),
-                                text= viewModel.uiState.currentRoutine?.score.toString(),
+                                text= workout?.getScore().toString(),
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -93,7 +94,7 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                     .padding(top = 5.dp),
                             )
                         }
-                        viewModel.uiState.currentRoutine?.category?.let { //Se hizo el chequeo antes
+                        workout?.category?.let { //Se hizo el chequeo antes
                             Text(                               //pero no permite hacerlo sin el let
                                 modifier = Modifier.padding(top=7.dp),
                                 text= it.name,
@@ -102,12 +103,12 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                             )
                         }
                         Text(
-                            text = "by " + viewModel.uiState.currentRoutine?.user?.username,
+                            text = "by " + workout?.user?.username,
                             fontSize = 25.sp,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(vertical = 10.dp)
                         )
-                        if(viewModel.uiState.currentRoutine?.hasCycles() == true){
+                        if(workout?.hasCycles() == true){
                             Column(
                                 modifier = Modifier
                                     .verticalScroll(rememberScrollState())
@@ -131,7 +132,7 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                 }
                             }
                         } else {
-                            // TODO ERROR_MSG La rutina no tiene ciclos ni ejercicios
+                            ErrorMessage("This workout doesn't have any cycles and/or exercises")
                         }
                         Spacer(modifier = Modifier.height(50.dp))
                     }
@@ -139,6 +140,6 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
             }
         }
     }
-    // TODO Mensaje de error con el routineId pasado
+    ErrorMessage("There seems to be an error :/")
 }
 

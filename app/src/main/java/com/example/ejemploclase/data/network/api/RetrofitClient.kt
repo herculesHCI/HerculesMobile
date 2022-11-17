@@ -54,4 +54,8 @@ object RetrofitClient {
     fun getApiFavouriteService(context: Context) : ApiFavoriteService {
         return getInstance(context).create(ApiFavoriteService::class.java)
     }
+
+    fun getApiReviewService(context: Context): ApiReviewService {
+        return getInstance(context).create(ApiReviewService::class.java)
+    }
 }
