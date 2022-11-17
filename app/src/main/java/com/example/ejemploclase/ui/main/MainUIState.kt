@@ -1,8 +1,6 @@
 package com.example.ejemploclase.ui.main
 
-import com.example.ejemploclase.data.model.Sport
-import com.example.ejemploclase.data.model.User
-import com.example.ejemploclase.data.model.Workout
+import com.example.ejemploclase.data.model.*
 
 data class MainUiState(
     val isAuthenticated: Boolean = false,

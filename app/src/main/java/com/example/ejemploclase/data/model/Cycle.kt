@@ -1,28 +1,23 @@
 package com.example.ejemploclase.data.model
 
 import com.example.ejemploclase.data.model.Exercise
-
-class Cycle ( // No guardo el order, SIEMPRE PEDIR CYCLE EN ORDER ASC
-        private var name: String,
-        private var type: String,
-        private var repetitions: Int,
-        private var routineId: Number //Capaz no es util
+//id,name,detail,type,order,repetitions
+data class Cycle (
+        var id: Int,
+        var name: String,
+        var detail: String,
+        var type: String,
+        var order: Int,
+        var repetitions: Int,
         ) {
         private var exercises: List<Exercise>? = null
 
-        fun getName() : String {
-                return name
-        }
-        fun getType() : String {
-                return type
-        }
-        fun getRepetitions() : Int {
-                return repetitions
+        fun hasExercises() : Boolean {
+                return exercises != null
         }
         fun getExercises() : List<Exercise>? {
                 return exercises
         }
-
         fun setExercises(exercises: List<Exercise>?) {//la lista que recibo estaria ordenada
                 this.exercises = exercises
         }

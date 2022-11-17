@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.ejemploclase.WorkoutViewModel
 import com.example.ejemploclase.data.model.*
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
@@ -41,267 +40,231 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
         ErrorMessage(message = "Choose a workout from your favorites to start training")
     } else {
         val uiState = viewModel.uiState
-        if(!uiState.canGetRoutine){
-            viewModel.getRoutine(workoutId)
-            if(viewModel.uiState.currentRoutine == null){
-                ErrorMessage(message = "There seems to be an error :/")
-            }
+        if(!uiState.canGetRoutine && !viewModel.uiState.isFetching){
+            viewModel.getCompleteRoutine(workoutId)
         }
-        val workout = viewModel.uiState.currentRoutine
-        val workoutViewmodel = viewModel<WorkoutViewModel>()
-        Box(modifier = Modifier.fillMaxSize()){
-            /**
-             * hasStarted has three posible values:
-             * 0 if the wokout wasnt started,
-             * 1 if it was started,
-             * 2 if its finished
-             */
-            val hasStarted = remember { mutableStateOf(0) }
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colors.background)
-                    .padding(horizontal = 25.dp, 15.dp)
-                    .padding(bottom = 60.dp)
-
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Column(modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(MaterialTheme.colors.primary)
+        if(viewModel.uiState.canGetRoutine) {
+            val workout = viewModel.uiState.currentRoutine
+            Box(modifier = Modifier.fillMaxSize()){
+                /**
+                 * hasStarted has three posible values:
+                 * 0 if the wokout wasnt started,
+                 * 1 if it was started,
+                 * 2 if its finished
+                 */
+                val hasStarted = remember { mutableStateOf(0) }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colors.background)
+                        .padding(horizontal = 25.dp, 15.dp)
+                        .padding(bottom = 60.dp)
+                        .verticalScroll(rememberScrollState())
                 ) {
-                    if( hasStarted.value==1 || hasStarted.value==0 ){
-                        Row(
-                            modifier = Modifier.padding(15.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            workout?.name?.let {
-                                Text(
-                                    text = it,
-                                    fontSize = 30.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colors.background
-                                )
+                    Column(modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colors.primary)
+                    ) {
+                        if( hasStarted.value==1 || hasStarted.value==0 ){
+                            Row(
+                                modifier = Modifier.padding(15.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                workout?.name?.let {
+                                    Text(
+                                        text = it,
+                                        fontSize = 30.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colors.background
+                                    )
+                                }
                             }
-                        }
-                        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
-                            workout?.category?.name?.let {
+                            Row(modifier = Modifier.padding(15.dp, 5.dp)) {
+                                workout?.category?.name?.let {
+                                    Text(
+                                        text = it,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colors.background
+                                    )
+                                }
+                            }
+                            Row(modifier = Modifier.padding(15.dp, 5.dp)) {
                                 Text(
-                                    text = it,
+                                    text = "by ".plus(workout?.user?.username),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colors.background
                                 )
                             }
-                        }
-                        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
-                            Text(
-                                text = "by ".plus(workout?.user?.username),
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colors.background
-                            )
-                        }
-                        Row() {
-                            Column {
-                                if(workout?.hasCycles() == true){
-                                    Row(modifier = Modifier.padding(15.dp, 10.dp)){
-                                        Box(modifier = Modifier
-                                            .clip(RoundedCornerShape(10.dp))
-                                            .fillMaxWidth()
-                                            .background(MaterialTheme.colors.background)
-                                            .padding(15.dp)
-                                        ){
-                                            workout?.getWarmupCycle()
-                                                ?.let { WarmUpCycle(cycle = it, viewmodel = workoutViewmodel) }
+                            Row() {
+                                Column {
+                                    if (workout != null) {
+                                        if(workout.hasCycles()){
+                                            for(cycle in workout.getCycles()!!) {
+                                                Row(modifier = Modifier.padding(15.dp, 10.dp)){
+                                                    Box(modifier = Modifier
+                                                        .clip(RoundedCornerShape(10.dp))
+                                                        .fillMaxWidth()
+                                                        .background(MaterialTheme.colors.background)
+                                                        .padding(15.dp)
+                                                    ){
+                                                        Cycle(cycle = cycle)
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            ErrorMessage(message = "This workout doesn't have any cycles and/or exercises")
                                         }
                                     }
-                                    Row(modifier = Modifier.padding(15.dp, 10.dp)){
-                                        Box(modifier = Modifier
-                                            .clip(RoundedCornerShape(10.dp))
-                                            .fillMaxWidth()
-                                            .background(MaterialTheme.colors.background) //Poner de vuelta el del theme
-                                            .padding(15.dp)
-                                        ){
-                                            workout?.getCommonCycle()
-                                                ?.let { CommonCycle(cycle = it, viewmodel = workoutViewmodel) }
-                                        }
-                                    }
-                                    Row(modifier = Modifier.padding(15.dp, 10.dp)){
-                                        Box(modifier = Modifier
-                                            .clip(RoundedCornerShape(10.dp))
-                                            .fillMaxWidth()
-                                            .background(MaterialTheme.colors.background) //Poner de vuelta el del theme
-                                            .padding(15.dp)
-                                        ){
-                                            workout?.getCooldownCycle()
-                                                ?.let { CooldownCycle(cycle = it, viewmodel = workoutViewmodel) }
-                                        }
-                                    }
-                                } else {
-                                    ErrorMessage(message = "This workout doesn't have any cycles and/or exercises")
-                                }
-                                /*if(workoutViewmodel.isDone){
-                                    Row(modifier = Modifier.padding(15.dp,10.dp)){
-                                        TextButton(onClick = { /*TODO pushearlo a la view de favs*/ },
-                                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary,
-                                                contentColor = MaterialTheme.colors.primary),
-                                            shape = RoundedCornerShape(20.dp)
-                                        ) {
-                                            Text(
-                                                text="Finish Workout",
-                                                fontWeight = FontWeight.Bold
-                                            )
-                                        }
-                                    }
-                                }*/
-                            }
-                        }
-                        if(hasStarted.value == 1 ){  //TODO center correctly
-                            Spacer(Modifier.weight(1f))
-                            Row(){
-                                Button(
-                                    onClick = {
-                                        hasStarted.value = 2
-                                    }) {
-                                    Text(text = "Finish Workout",
-                                        fontSize = 30.sp)
                                 }
                             }
-                            Spacer(Modifier.weight(1f))
-                        }
+                            if(hasStarted.value == 1 ){  //TODO center correctly
+                                Spacer(Modifier.weight(1f))
+                                Row(){
+                                    Button(
+                                        onClick = {
+                                            hasStarted.value = 2
+                                        }) {
+                                        Text(text = "Finish Workout",
+                                            fontSize = 30.sp)
+                                    }
+                                }
+                                Spacer(Modifier.weight(1f))
+                            }
 
 
-                    }
-                    if(hasStarted.value == 2 ){
-                        Column(modifier = Modifier
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(MaterialTheme.colors.primary)
-                            .padding(15.dp)
-                        ) {
-                            val stars = remember { mutableStateOf(0)}
-                            Row(){
-                                IconButton(onClick = {
-                                    hasStarted.value = 1
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Default.ArrowBack,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colors.background,
-                                        modifier = Modifier
-                                            .padding(15.dp)
-                                            .size(40.dp)
-                                    )
-                                }
-
-                                IconButton(onClick = {
-                                    navController.navigate("discover")
-                                }) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.Close,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colors.background,
-                                        modifier = Modifier
-                                            .padding(15.dp)
-                                            .size(40.dp)
-                                    )
-                                }
-                            }
-                            Text(text="Workout Finished",
-                                color = MaterialTheme.colors.background)
-                            workout?.name?.let {
-                                Text(
-                                    text = it,
-                                    fontSize = 30.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colors.background
-                                )
-                            }
-                            Text(
-                                text = "by ".plus(workout?.user?.username),
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colors.background
-                            )
-                            Text(
-                                text = "Rate the Workout!",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colors.background
-                            )
-                            Row(){
-                                for( i in 1..5 ){
+                        }
+                        if(hasStarted.value == 2 ){
+                            Column(modifier = Modifier
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(MaterialTheme.colors.primary)
+                                .padding(15.dp)
+                            ) {
+                                val stars = remember { mutableStateOf(0)}
+                                Row(){
                                     IconButton(onClick = {
-                                        stars.value = i
+                                        hasStarted.value = 1
                                     }) {
-                                        var col = MaterialTheme.colors.background;
-                                        if (stars.value >= i ) {
-                                            col = MaterialTheme.colors.secondary
-                                        }
                                         Icon(
-                                            imageVector = Icons.Default.Star,
+                                            imageVector = Icons.Default.ArrowBack,
                                             contentDescription = null,
-                                            tint =  col ,
+                                            tint = MaterialTheme.colors.background,
                                             modifier = Modifier
                                                 .padding(15.dp)
-                                                .size(30.dp)
+                                                .size(40.dp)
+                                        )
+                                    }
+
+                                    IconButton(onClick = {
+                                        navController.navigate("discover")
+                                    }) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.Close,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colors.background,
+                                            modifier = Modifier
+                                                .padding(15.dp)
+                                                .size(40.dp)
                                         )
                                     }
                                 }
-                            }
-                            val mContext = LocalContext.current
-                            Button(
-                                onClick = {
-                                    workout?.id?.let { viewModel.makeReview(it,stars.value*2) }
-                                    Toast.makeText(mContext, "Review Submitted", Toast.LENGTH_LONG).show()
-                                    navController.navigate("discover")
-                                }) {
-                                Text(text = "Sumbit Rating",
-                                    fontSize = 30.sp,
+                                Text(text="Workout Finished",
                                     color = MaterialTheme.colors.background)
+                                workout?.name?.let {
+                                    Text(
+                                        text = it,
+                                        fontSize = 30.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colors.background
+                                    )
+                                }
+                                Text(
+                                    text = "by ".plus(workout?.user?.username),
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colors.background
+                                )
+                                Text(
+                                    text = "Rate the Workout!",
+                                    fontSize = 20.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colors.background
+                                )
+                                Row(){
+                                    for( i in 1..5 ){
+                                        IconButton(onClick = {
+                                            stars.value = i
+                                        }) {
+                                            var col = MaterialTheme.colors.background;
+                                            if (stars.value >= i ) {
+                                                col = MaterialTheme.colors.secondary
+                                            }
+                                            Icon(
+                                                imageVector = Icons.Default.Star,
+                                                contentDescription = null,
+                                                tint =  col ,
+                                                modifier = Modifier
+                                                    .padding(15.dp)
+                                                    .size(30.dp)
+                                            )
+                                        }
+                                    }
+                                }
+                                val mContext = LocalContext.current
+                                Button(
+                                    onClick = {
+                                        workout?.id?.let { viewModel.makeReview(it,stars.value*2) }
+                                        Toast.makeText(mContext, "Review Submitted", Toast.LENGTH_LONG).show()
+                                        navController.navigate("discover")
+                                    }) {
+                                    Text(text = "Sumbit Rating",
+                                        fontSize = 30.sp,
+                                        color = MaterialTheme.colors.background)
+                                }
                             }
                         }
                     }
                 }
-            }
-            if( hasStarted.value == 0 ){
-                FloatingActionButton(
-                    onClick = {
-                        hasStarted.value = 1
-                    },
-                    backgroundColor = MaterialTheme.colors.primary,
-                    contentColor = MaterialTheme.colors.background,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(bottom = 75.dp)
-                        .padding(horizontal = 15.dp)
-                        .size(65.dp)
-                ) {
-                    // on below line we are
-                    // adding icon for button.
-                    Icon(
-                        imageVector = Icons.Default.PlayArrow,
-                        contentDescription = null,
-                    )
+                if( hasStarted.value == 0 ){
+                    FloatingActionButton(
+                        onClick = {
+                            hasStarted.value = 1
+                        },
+                        backgroundColor = MaterialTheme.colors.primary,
+                        contentColor = MaterialTheme.colors.background,
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(bottom = 75.dp)
+                            .padding(horizontal = 15.dp)
+                            .size(65.dp)
+                    ) {
+                        // on below line we are
+                        // adding icon for button.
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = null,
+                        )
+                    }
                 }
             }
         }
+
     }
 
 }
 
 @Composable
-fun WarmUpCycle(cycle: Cycle,viewmodel: WorkoutViewModel){
-    viewmodel.initializeWarmup(cycle.getRepetitions(),cycle.getExercises()!!.size)
+fun Cycle(cycle: Cycle){
     Column() {
         Row(modifier = Modifier.padding(15.dp, 5.dp)) {
             Text(
-                text = cycle.getName(),
+                text = cycle.name,
                 fontSize = 23.sp
             )
         }
         var i = 0
-        while(i < cycle.getRepetitions()){
+        while(i < cycle.repetitions){
             Column(modifier = Modifier.padding(horizontal = 15.dp)){
                 Text(
                     text = (i+1).toString().plus(" rep"),
@@ -311,11 +274,8 @@ fun WarmUpCycle(cycle: Cycle,viewmodel: WorkoutViewModel){
                     val checkedState = rememberSaveable { mutableStateOf(false) }
                     Row(modifier = Modifier.padding(15.dp,3.dp)){
                         LabelledCheckbox(checked = checkedState.value,
-                            onCheckedChange = { if(it){
-                                checkedState.value = it
-                                viewmodel.decrementExerciseWarmup()
-                            } /*else no permito que se destickee*/ },
-                            label = exercise.getName())
+                            onCheckedChange = { checkedState.value = it },
+                            label = exercise.baseExercise.name)
                     }
                 }
             }
@@ -323,75 +283,6 @@ fun WarmUpCycle(cycle: Cycle,viewmodel: WorkoutViewModel){
         }
     }
 }
-
-@Composable
-fun CommonCycle(cycle: Cycle,viewmodel: WorkoutViewModel){
-    viewmodel.initializeCommon(cycle.getRepetitions(),cycle.getExercises()!!.size)
-    Column() {
-        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
-            Text(
-                text = cycle.getName(),
-                fontSize = 23.sp
-            )
-        }
-        var i = 0
-        while(i < cycle.getRepetitions()){
-            Column(modifier = Modifier.padding(horizontal = 15.dp)){
-                Text(
-                    text = (i+1).toString().plus(" rep"),
-                    fontSize = 23.sp
-                )
-                for(exercise in cycle.getExercises()!!){
-                    val checkedState = rememberSaveable { mutableStateOf(false) }
-                    Row(modifier = Modifier.padding(15.dp,3.dp)){
-                        LabelledCheckbox(checked = checkedState.value,
-                            onCheckedChange = { if(it){
-                                checkedState.value = it
-                                viewmodel.decrementExerciseCommon()
-                            } /*else no permito que se destickee*/ },
-                            label = exercise.getName())
-                    }
-                }
-            }
-            i++
-        }
-    }
-}
-
-@Composable
-fun CooldownCycle(cycle: Cycle,viewmodel: WorkoutViewModel){
-    viewmodel.initializeCooldown(cycle.getRepetitions(),cycle.getExercises()!!.size)
-    Column() {
-        Row(modifier = Modifier.padding(15.dp, 5.dp)) {
-            Text(
-                text = cycle.getName(),
-                fontSize = 23.sp
-            )
-        }
-        var i = 0
-        while(i < cycle.getRepetitions()){
-            Column(modifier = Modifier.padding(horizontal = 15.dp)){
-                Text(
-                    text = (i+1).toString().plus(" rep"),
-                    fontSize = 23.sp
-                )
-                for(exercise in cycle.getExercises()!!){
-                    val checkedState = rememberSaveable { mutableStateOf(false) }
-                    Row(modifier = Modifier.padding(15.dp,3.dp)){
-                        LabelledCheckbox(checked = checkedState.value,
-                            onCheckedChange = { if(it){
-                                checkedState.value = it
-                                viewmodel.decrementExerciseCooldown()
-                            } /*else no permito que se destickee*/ },
-                            label = exercise.getName())
-                    }
-                }
-            }
-            i++
-        }
-    }
-}
-
 
 @Composable
 fun LabelledCheckbox(

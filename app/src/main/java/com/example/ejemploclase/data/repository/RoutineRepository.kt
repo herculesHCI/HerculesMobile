@@ -32,4 +32,17 @@ class RoutineRepository(
     suspend fun makeRoutineReview(routineId: Int,rating: Int) {
         remoteDataSource.makeRoutineReview(routineId,rating)
     }
+
+    suspend fun getCompleteRoutine(routineId: Int) : Workout {
+        val workout = remoteDataSource.getRoutine(routineId).asModel()
+        val resultCycles = remoteDataSource.getRoutineCycles(routineId)
+        val cycles = resultCycles.content.map { it.asModel() }
+        for(cycle in cycles) {
+            val resultExercises = remoteDataSource.getCycleExercises(cycle.id)
+            val exercises = resultExercises.content.map { it.asModel() }
+            cycle.setExercises(exercises)
+        }
+        workout.setCycles(cycles.toTypedArray())
+        return workout
+    }
 }

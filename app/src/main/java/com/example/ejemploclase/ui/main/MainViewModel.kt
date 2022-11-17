@@ -201,7 +201,26 @@ class MainViewModel(
         runCatching {
             routineRepository.getRoutine(routineId)
         }.onSuccess { response ->
+            uiState = uiState.copy(
+                isFetching = false,
+                currentRoutine = response
+            )
+        }.onFailure { e ->
+            // Handle the error and notify the UI when appropriate.
+            uiState = uiState.copy(
+                message = e.message,
+                isFetching = false)
+        }
+    }
 
+    fun getCompleteRoutine(routineId: Int) = viewModelScope.launch {
+        uiState = uiState.copy(
+            isFetching = true,
+            message = null
+        )
+        runCatching {
+            routineRepository.getCompleteRoutine(routineId)
+        }.onSuccess { response ->
             uiState = uiState.copy(
                 isFetching = false,
                 currentRoutine = response

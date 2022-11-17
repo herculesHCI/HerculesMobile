@@ -40,12 +40,13 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
 ){
     if(workoutId != null){
         val uiState = viewModel.uiState
+        val workout = uiState.currentRoutine
         if(uiState.currentRoutine == null){
-            viewModel.getRoutine(workoutId)
-            viewModel.getFavorites() // Asi puedo saber si la current es favorita o no
+            if(!viewModel.uiState.isFetching) {
+                viewModel.getCompleteRoutine(workoutId)
+            }
         }
         if(viewModel.uiState.canGetRoutine){
-            val workout = viewModel.uiState.currentRoutine
             val isFav = workout?.let { viewModel.isFavourite(it) }
             Box( modifier = Modifier.background(MaterialTheme.colors.background)){
                 Row(){
@@ -142,31 +143,37 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(vertical = 10.dp)
                         )
-                        if(workout?.hasCycles() == true){
-                            Column(
-                                modifier = Modifier
-                                    .verticalScroll(rememberScrollState())
-                                    .padding(top = 15.dp)
-                            ) {
-                                workout.getCycles()?.forEach { cyc ->
-                                    Text(
-                                        text = cyc.getName(),
-                                        fontSize = 22.sp,
-                                        fontWeight = FontWeight.Medium
-                                    )
-                                    cyc.getExercises()?.forEach(){ ex ->
+                        if (workout != null) {
+                            if(workout.hasCycles()){
+                                Column(
+                                    modifier = Modifier
+                                        .verticalScroll(rememberScrollState())
+                                        .padding(top = 15.dp)
+                                ) {
+                                    workout.getCycles()?.forEach { cyc ->
                                         Text(
-                                            text = ex.getName(),
-                                            fontSize = 20.sp,
+                                            text = cyc.name,
+                                            fontSize = 22.sp,
+                                            fontWeight = FontWeight.Medium
                                         )
+                                        if(cyc.hasExercises()){
+                                            cyc.getExercises()?.forEach(){ ex ->
+                                                Text(
+                                                    text = ex.baseExercise.name,
+                                                    fontSize = 20.sp,
+                                                )
+                                            }
+                                        } else {
+                                            ErrorMessage(message = "This Cycle doesn't have any exercises")
+                                        }
+                                        Spacer(modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(20.dp))
                                     }
-                                    Spacer(modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(20.dp))
                                 }
+                            } else {
+                                ErrorMessage("This workout doesn't have any cycles")
                             }
-                        } else {
-                            ErrorMessage("This workout doesn't have any cycles and/or exercises")
                         }
                         Spacer(modifier = Modifier.height(50.dp))
                     }

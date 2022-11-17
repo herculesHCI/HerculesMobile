@@ -2,11 +2,11 @@ package com.example.ejemploclase.data.model
 
 data class Workout(
     val id: Int,
-    var name: String,
-    private var score: Number,
-    var category: Category,
-    var user: User,
-    var isFav: Boolean? = false,
+    val name: String,
+    private val score: Number,
+    val category: Category,
+    val user: User,
+    val isFav: Boolean? = false,
 ) {
     private var cycles: Array<Cycle>? = null
 

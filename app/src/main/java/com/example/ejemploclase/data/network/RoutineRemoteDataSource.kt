@@ -2,9 +2,7 @@ package com.example.ejemploclase.data.network
 
 import com.example.ejemploclase.data.network.api.ApiReviewService
 import com.example.ejemploclase.data.network.api.ApiRoutineService
-import com.example.ejemploclase.data.network.model.NetworkPagedContent
-import com.example.ejemploclase.data.network.model.NetworkReview
-import com.example.ejemploclase.data.network.model.NetworkRoutine
+import com.example.ejemploclase.data.network.model.*
 
 class RoutineRemoteDataSource(
     private val apiRoutineService: ApiRoutineService,
@@ -26,6 +24,18 @@ class RoutineRemoteDataSource(
     suspend fun makeRoutineReview(routineId: Int,rating: Int) {
         handleApiResponse {
             apiReviewService.makeRoutineReview(routineId,NetworkReview(rating,""))
+        }
+    }
+
+    suspend fun getRoutineCycles(routineId: Int) : NetworkPagedContent<NetworkCycle> {
+        return handleApiResponse {
+            apiRoutineService.getRoutineCycles(routineId)
+        }
+    }
+
+    suspend fun getCycleExercises(cycleId: Int) : NetworkPagedContent<NetworkExercise> {
+        return handleApiResponse {
+            apiRoutineService.getCycleExercises(cycleId)
         }
     }
 }
