@@ -1,5 +1,6 @@
 package com.example.ejemploclase.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -107,8 +109,10 @@ fun WorkoutFavElement(item: Workout,navController: NavHostController,viewModel: 
                         imageVector = Icons.Default.StarBorder ,
                         contentDescription = null
                     )
+                    val mContext = LocalContext.current
                     IconButton(onClick = {
                         viewModel.deleteFavorite(item.id)
+                        Toast.makeText(mContext, "Removed from favourites", Toast.LENGTH_LONG).show()
                     }) {
                         Icon(imageVector = Icons.Default.Favorite,
                             contentDescription = null,

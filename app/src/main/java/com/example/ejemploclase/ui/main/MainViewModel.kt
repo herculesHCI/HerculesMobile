@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ejemploclase.data.model.Sport
+import com.example.ejemploclase.data.model.Workout
 import com.example.ejemploclase.data.network.util.SessionManager
 import com.example.ejemploclase.data.repository.FavoriteRepository
 import com.example.ejemploclase.data.repository.RoutineRepository
@@ -200,6 +201,7 @@ class MainViewModel(
         runCatching {
             routineRepository.getRoutine(routineId)
         }.onSuccess { response ->
+
             uiState = uiState.copy(
                 isFetching = false,
                 currentRoutine = response
@@ -292,6 +294,10 @@ class MainViewModel(
                 message = e.message,
                 isFetching = false)
         }
+    }
+
+    fun isFavourite(routine: Workout) : Boolean {
+        return favoriteRepository.isFavourite(routine)
     }
 
 }

@@ -32,4 +32,16 @@ class FavoriteRepository(
     suspend fun deleteFavourite(routineId: Int) {
         remoteDataSource.deleteFavourite(routineId)
     }
+
+    fun isFavourite(workout: Workout) : Boolean {
+        if(routines.isEmpty()) { // Si no estan cargadas devuelvo falso
+            return false // Idealmente pedir favs y despues llamar a esta funcion
+        }
+        for(routine in routines) {
+            if(workout == routine) {
+                return true
+            }
+        }
+        return false
+    }
 }

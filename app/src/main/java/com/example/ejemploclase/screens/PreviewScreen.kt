@@ -8,6 +8,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -40,21 +42,53 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
         val uiState = viewModel.uiState
         if(uiState.currentRoutine == null){
             viewModel.getRoutine(workoutId)
+            viewModel.getFavorites() // Asi puedo saber si la current es favorita o no
         }
         if(viewModel.uiState.canGetRoutine){
             val workout = viewModel.uiState.currentRoutine
+            val isFav = workout?.let { viewModel.isFavourite(it) }
             Box( modifier = Modifier.background(MaterialTheme.colors.background)){
-                IconButton(onClick = {
-                    navController.navigateUp()
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = null,
-                        tint = Color.Black,
-                        modifier = Modifier
-                            .padding(15.dp)
-                            .size(40.dp)
-                    )
+                Row(){
+                    IconButton(onClick = {
+                        navController.navigateUp()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = null,
+                            tint = Color.Black,
+                            modifier = Modifier
+                                .padding(15.dp)
+                                .size(40.dp)
+                        )
+                    }
+                    Spacer( modifier = Modifier.weight(1f))
+                    if(isFav == true) {
+                        IconButton(onClick = {
+                            workout.id.let { viewModel.deleteFavorite(it) }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Favorite,
+                                contentDescription = null,
+                                tint = Color.Black,
+                                modifier = Modifier
+                                    .padding(15.dp)
+                                    .size(40.dp)
+                            )
+                        }
+                    } else {
+                        IconButton(onClick = {
+                            workout?.id?.let { viewModel.markFavorite(it) }
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.FavoriteBorder,
+                                contentDescription = null,
+                                tint = Color.Black,
+                                modifier = Modifier
+                                    .padding(15.dp)
+                                    .size(40.dp)
+                            )
+                        }
+                    }
                 }
                 Card(shape = RoundedCornerShape(6.dp),
                     modifier = Modifier
@@ -139,7 +173,8 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                 }
             }
         }
+    } else {
+        ErrorMessage("There seems to be an error :/")
     }
-    ErrorMessage("There seems to be an error :/")
 }
 
