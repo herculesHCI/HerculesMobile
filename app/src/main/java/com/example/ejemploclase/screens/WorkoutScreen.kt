@@ -1,5 +1,6 @@
 package com.example.ejemploclase.screens
 
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,7 +33,18 @@ import com.example.ejemploclase.ui.main.canGetRoutine
 @Composable
 fun WorkoutScreen(navController: NavHostController, workoutId: Int ,viewModel: MainViewModel = viewModel(factory = getViewModelFactory()) ){
     com.example.ejemploclase.AppBar(navController) {
-        WorkoutContent(workoutId, navController, viewModel)
+        val configuration = LocalConfiguration.current
+        when (configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                WorkoutContent(workoutId, navController, viewModel)
+            }
+
+            // Other wise
+            else -> {
+                WorkoutContent(workoutId, navController, viewModel)
+            }
+        }
+
     }
 }
 
