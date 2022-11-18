@@ -12,7 +12,10 @@ import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,6 +27,7 @@ import com.example.ejemploclase.ui.main.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.math.log
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
@@ -53,11 +57,13 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
                             fontWeight = FontWeight.Bold)
                     }
                 }
-                Row(){
-                    Text(stringResource(R.string.settings_lang))
-                }
+
+                Spacer(Modifier.fillMaxWidth().height(15.dp))
+
+                Text(stringResource(R.string.settings_lang), fontWeight = FontWeight.SemiBold , fontSize = 25.sp ,
+                modifier = Modifier.padding(bottom=5.dp))
                 var expanded = remember { mutableStateOf(false) }
-                var currentLanguage: MutableState<String> = mutableStateOf( viewModel.getLanguage() )
+                var currentLanguage: MutableState<String> = mutableStateOf( Locale.getDefault().getLanguage() )
 
                 Box(){
                     OutlinedButton(onClick = {
@@ -73,6 +79,9 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
 
                     }
 
+                    val context = LocalContext.current
+                    val possibleLanguages =  arrayOf("en","es")
+
                     DropdownMenu(
                         expanded = expanded.value,
                         onDismissRequest = {
@@ -80,10 +89,17 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
                         },
 
                         ) {
-                        viewModel.getPossibleLanguages().forEachIndexed() { index, str ->
+                        possibleLanguages.forEachIndexed() { index, str ->
                             DropdownMenuItem(onClick = {
-                                viewModel.setLanguage(str)
-                                currentLanguage.value = str
+                                val locale = Locale(str)
+                                Locale.setDefault(locale)
+                                val resources = context.getResources()
+                                val configuration = resources.getConfiguration()
+                                configuration.locale = locale
+                                resources.updateConfiguration(configuration, resources.getDisplayMetrics())
+
+                                currentLanguage.value = Locale.getDefault().getLanguage()
+
                                 expanded.value = false
                             }) {
                                 Text(text = str )
@@ -93,7 +109,10 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
 
                 }
 
-                Text(stringResource(R.string.settings_account))
+                Spacer(Modifier.fillMaxWidth().height(15.dp))
+
+                Text(stringResource(R.string.settings_account), fontWeight = FontWeight.SemiBold , fontSize = 25.sp,
+                    modifier = Modifier.padding(bottom=5.dp))
 
                 val openDialog = remember { mutableStateOf(false)  }
 
