@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.MoveDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
@@ -54,7 +55,7 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
 
                 Text(stringResource(R.string.settings_lang))
                 var expanded = remember { mutableStateOf(false) }
-                var currentLanguage: MutableState<String> = mutableStateOf( viewModel.getLanguage() )
+                var currentLanguage: MutableState<String> = mutableStateOf( Locale.getDefault().getLanguage() )
 
                 Box(){
                     OutlinedButton(onClick = {
@@ -70,6 +71,9 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
 
                     }
 
+                    val context = LocalContext.current
+                    val possibleLanguages =  arrayOf("en","es")
+
                     DropdownMenu(
                         expanded = expanded.value,
                         onDismissRequest = {
@@ -77,10 +81,17 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
                         },
 
                         ) {
-                        viewModel.getPossibleLanguages().forEachIndexed() { index, str ->
+                        possibleLanguages.forEachIndexed() { index, str ->
                             DropdownMenuItem(onClick = {
-                                viewModel.setLanguage(str)
-                                currentLanguage.value = str
+                                val locale = Locale(str)
+                                Locale.setDefault(locale)
+                                val resources = context.getResources()
+                                val configuration = resources.getConfiguration()
+                                configuration.locale = locale
+                                resources.updateConfiguration(configuration, resources.getDisplayMetrics())
+
+                                currentLanguage.value = Locale.getDefault().getLanguage()
+
                                 expanded.value = false
                             }) {
                                 Text(text = str )
