@@ -1,5 +1,7 @@
 package com.example.ejemploclase.screens
 
+import android.widget.Toast
+import android.widget.Toast.makeText
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -15,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.*
@@ -26,6 +29,7 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.navArgument
+import com.example.ejemploclase.screens.utils.ErrorMessage
 import kotlinx.coroutines.delay
 
 
@@ -38,11 +42,10 @@ fun LogInScreen(navController: NavHostController, viewModel: MainViewModel = vie
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.primary
+        color = MaterialTheme.colors.primary,
     ) {
-
         Column(
-            modifier = Modifier
+        modifier = Modifier
                 .fillMaxHeight()
                 .verticalScroll(rememberScrollState())
         ) {
@@ -99,19 +102,24 @@ fun LogInScreen(navController: NavHostController, viewModel: MainViewModel = vie
                     onDone = { focusManager.clearFocus() }
                 )
             )
-            Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
+
+            Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 40.dp)) {
+                val context=LocalContext.current
                 Button(
                     onClick = {
                         if(!viewModel.uiState.isFetching){
                             viewModel.login(username.value.text , password.value.text)
                             coroutineScope.launch {
-                                delay(250)
-                                if(viewModel.uiState.isAuthenticated){
+                               if(viewModel.uiState.isAuthenticated){
                                     navController.navigate("discover")
+                            }
+                              else {
+                                    makeText(context,"Error authenticating username or/and password",Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }
                     },
+
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .fillMaxWidth()
