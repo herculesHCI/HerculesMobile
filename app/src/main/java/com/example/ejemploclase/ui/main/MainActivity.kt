@@ -91,7 +91,9 @@ class MainActivity : ComponentActivity() {
             if(data != null) {
                 val parameters: List<String> = data.pathSegments
                 val params = parameters[parameters.size -1]
-                navController.navigate("preview/${params}")
+                if(parameters.size == 2 && parameters[0] == "workout"){
+                    navController.navigate("preview/${params}")
+                }
             }
         }
     }
