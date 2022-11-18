@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.ejemploclase.AppBarCompact
 import com.example.ejemploclase.R
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
@@ -32,112 +33,114 @@ import kotlin.math.log
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = getViewModelFactory())) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)
-        .padding(horizontal = 25.dp)
-        .verticalScroll(rememberScrollState())){
-        Column {
-            IconButton(onClick = {
-                navController.navigateUp()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(60.dp)
-                        .padding(vertical = 10.dp)
-                )
-            }
-
-            Text(stringResource(R.string.settings_lang))
-            var expanded = remember { mutableStateOf(false) }
-            var currentLanguage: MutableState<String> = mutableStateOf( viewModel.getLanguage() )
-
-            Box(){
-                OutlinedButton(onClick = {
-                    expanded.value = true
+    AppBarCompact(navController = navController) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 25.dp)
+            .verticalScroll(rememberScrollState())){
+            Column {
+                IconButton(onClick = {
+                    navController.navigateUp()
                 }) {
-                    Row(Modifier.defaultMinSize()){
-                        Text(text = currentLanguage.value , color = Color.Black)
-                        Spacer(modifier = Modifier.width(15.dp))
-                        Icon(imageVector = Icons.Default.ArrowDownward , contentDescription = null, tint = Color.Black, modifier = Modifier
-                            .size(15.dp)
-                            .padding(top = 5.dp) )
-                    }
-
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(60.dp)
+                            .padding(vertical = 10.dp)
+                    )
                 }
 
-                DropdownMenu(
-                    expanded = expanded.value,
-                    onDismissRequest = {
-                        expanded.value = false
-                    },
+                Text(stringResource(R.string.settings_lang))
+                var expanded = remember { mutableStateOf(false) }
+                var currentLanguage: MutableState<String> = mutableStateOf( viewModel.getLanguage() )
 
-                    ) {
-                    viewModel.getPossibleLanguages().forEachIndexed() { index, str ->
-                        DropdownMenuItem(onClick = {
-                            viewModel.setLanguage(str)
-                            currentLanguage.value = str
+                Box(){
+                    OutlinedButton(onClick = {
+                        expanded.value = true
+                    }) {
+                        Row(Modifier.defaultMinSize()){
+                            Text(text = currentLanguage.value , color = Color.Black)
+                            Spacer(modifier = Modifier.width(15.dp))
+                            Icon(imageVector = Icons.Default.ArrowDownward , contentDescription = null, tint = Color.Black, modifier = Modifier
+                                .size(15.dp)
+                                .padding(top = 5.dp) )
+                        }
+
+                    }
+
+                    DropdownMenu(
+                        expanded = expanded.value,
+                        onDismissRequest = {
                             expanded.value = false
-                        }) {
-                            Text(text = str )
+                        },
+
+                        ) {
+                        viewModel.getPossibleLanguages().forEachIndexed() { index, str ->
+                            DropdownMenuItem(onClick = {
+                                viewModel.setLanguage(str)
+                                currentLanguage.value = str
+                                expanded.value = false
+                            }) {
+                                Text(text = str )
+                            }
                         }
                     }
+
                 }
 
-            }
+                Text(stringResource(R.string.settings_account))
 
-            Text(stringResource(R.string.settings_account))
+                val openDialog = remember { mutableStateOf(false)  }
 
-            val openDialog = remember { mutableStateOf(false)  }
+                Button(onClick = {
+                    openDialog.value = true
+                }) {
+                    Text("Logout")
+                }
 
-            Button(onClick = {
-                openDialog.value = true
-            }) {
-                Text("Logout")
-            }
+                val coroutineScope = rememberCoroutineScope()
 
-            val coroutineScope = rememberCoroutineScope()
+                if (openDialog.value) {
 
-            if (openDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = {
+                            openDialog.value = false
+                        },
+                        title = {
+                            Text(text = stringResource(R.string.settings_account_confirm))
+                        },
+                        dismissButton = {
+                            Button(
 
-                AlertDialog(
-                    onDismissRequest = {
-                        openDialog.value = false
-                    },
-                    title = {
-                        Text(text = stringResource(R.string.settings_account_confirm))
-                    },
-                    dismissButton = {
-                        Button(
-
-                            onClick = {
-                                openDialog.value = false
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color.Red,
-                                contentColor = Color.White
-                            ))
+                                onClick = {
+                                    openDialog.value = false
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Color.Red,
+                                    contentColor = Color.White
+                                ))
                             {
-                            Text(stringResource(R.string.settings_logout_cancel))
-                        }
-                    },
-                    confirmButton = {
-                        Button(
+                                Text(stringResource(R.string.settings_logout_cancel))
+                            }
+                        },
+                        confirmButton = {
+                            Button(
 
-                            onClick = {
-                                viewModel.logout()
-                                coroutineScope.launch {
-                                    delay(250)
-                                    navController.navigate("login")
-                                }
-                                openDialog.value = false
-                            }) {
-                            Text("LOGOUT")
+                                onClick = {
+                                    viewModel.logout()
+                                    coroutineScope.launch {
+                                        delay(250)
+                                        navController.navigate("login")
+                                    }
+                                    openDialog.value = false
+                                }) {
+                                Text("LOGOUT")
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }

@@ -31,7 +31,7 @@ fun NavRail(navController: NavHostController) {
         backgroundColor = Color.LightGray) {
         val selectedIndex = remember { mutableStateOf(0) }
         NavigationRailItem(icon = {
-            Icon(imageVector = Icons.Default.Home,"")
+            Icon(imageVector = Icons.Default.Explore,"")
         },
             label = { Text(text = "Discover") },
             selected = (selectedIndex.value == 0),
@@ -41,7 +41,7 @@ fun NavRail(navController: NavHostController) {
             })
 
         NavigationRailItem(icon = {
-            Icon(imageVector = Icons.Default.PlayArrow,"")
+            Icon(imageVector = Icons.Default.PlayCircle,"")
         },
             label = { Text(text = "Workout") },
             selected = (selectedIndex.value == 1),
@@ -87,19 +87,18 @@ fun AppBarCompact(navController: NavHostController, function: @Composable () -> 
                 val selectedIndex = remember { mutableStateOf(0) }
                 BottomNavigation(elevation = 10.dp ,
                         backgroundColor = Color.LightGray) {
-
                     BottomNavigationItem(icon = {
-                        Icon(imageVector = Icons.Default.Home,"")
+                        Icon(imageVector = Icons.Default.Explore,"")
                     },
                             label = { Text(text = "Discover") },
                             selected = (selectedIndex.value == 0),
                             onClick = {
                                 selectedIndex.value = 0;
                                 navController.navigate("discover");
-                            })
+                            }, selectedContentColor = MaterialTheme.colors.secondary)
 
                     BottomNavigationItem(icon = {
-                        Icon(imageVector = Icons.Default.PlayArrow,"")
+                        Icon(imageVector = Icons.Default.PlayCircle,"")
                     },
                             label = { Text(text = "Workout") },
                             selected = (selectedIndex.value == 1),

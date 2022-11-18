@@ -243,11 +243,19 @@ class MainViewModel(
         runCatching {
             favoriteRepository.getFavourites()
         }.onSuccess { response ->
-            uiState = uiState.copy(
-                isFetching = false,
-                favouritesRoutines = response,
-                favChanged = false
-            )
+            uiState = if(response.isEmpty()){
+                uiState.copy(
+                    isFetching = false,
+                    favouritesRoutines = null,
+                    favChanged = false
+                )
+            } else {
+                uiState.copy(
+                    isFetching = false,
+                    favouritesRoutines = response,
+                    favChanged = false
+                )
+            }
         }.onFailure { e ->
             // Handle the error and notify the UI when appropriate.
             uiState = uiState.copy(

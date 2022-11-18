@@ -33,6 +33,7 @@ import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ejemploclase.R
+import com.example.ejemploclase.screens.utils.ErrorMessage
 import com.example.ejemploclase.ui.main.canGetFavourites
 
 
@@ -52,7 +53,6 @@ fun FavoriteContent(navController: NavHostController,viewModel: MainViewModel = 
     val uiState = viewModel.uiState
     if(uiState.favouritesRoutines == null || uiState.favChanged){
         viewModel.getFavorites()
-        // TODO ERR_MSG No tiene favoritos o error en conexion con la api
     }
     if(viewModel.uiState.canGetFavourites){
         Box(modifier = Modifier
@@ -74,6 +74,8 @@ fun FavoriteContent(navController: NavHostController,viewModel: MainViewModel = 
             }
 
         }
+    } else {
+        ErrorMessage("Add workouts to favourites")
     }
 }
 
@@ -81,11 +83,11 @@ fun FavoriteContent(navController: NavHostController,viewModel: MainViewModel = 
 fun WorkoutFavElement(item: Workout,navController: NavHostController,viewModel: MainViewModel = viewModel(
     factory = getViewModelFactory())) {
     Box(
-            Modifier
-                    .fillMaxWidth()
-                    .background(Color.LightGray, shape = RoundedCornerShape(5.dp))
-                    .defaultMinSize()
-                    .padding(10.dp)
+        Modifier
+            .fillMaxWidth()
+            .background(Color.LightGray, shape = RoundedCornerShape(5.dp))
+            .defaultMinSize()
+            .padding(10.dp)
     ){
         Row(){
             Column(modifier = Modifier.weight(0.7f)) {
