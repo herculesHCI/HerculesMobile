@@ -27,41 +27,38 @@ var openDialog = false
 
 @Composable
 fun NavRail(navController: NavHostController) {
-    NavigationRail() {
+    NavigationRail(elevation = 10.dp ,
+        backgroundColor = Color.LightGray) {
         val selectedIndex = remember { mutableStateOf(0) }
-        BottomNavigation(elevation = 10.dp ,
-            backgroundColor = Color.LightGray) {
+        NavigationRailItem(icon = {
+            Icon(imageVector = Icons.Default.Home,"")
+        },
+            label = { Text(text = "Discover") },
+            selected = (selectedIndex.value == 0),
+            onClick = {
+                selectedIndex.value = 0;
+                navController.navigate("discover");
+            })
 
-            BottomNavigationItem(icon = {
-                Icon(imageVector = Icons.Default.Home,"")
-            },
-                label = { Text(text = "Discover") },
-                selected = (selectedIndex.value == 0),
-                onClick = {
-                    selectedIndex.value = 0;
-                    navController.navigate("discover");
-                })
+        NavigationRailItem(icon = {
+            Icon(imageVector = Icons.Default.PlayArrow,"")
+        },
+            label = { Text(text = "Workout") },
+            selected = (selectedIndex.value == 1),
+            onClick = {
+                selectedIndex.value = 1;
+                navController.navigate("workout");
+            })
 
-            BottomNavigationItem(icon = {
-                Icon(imageVector = Icons.Default.PlayArrow,"")
-            },
-                label = { Text(text = "Workout") },
-                selected = (selectedIndex.value == 1),
-                onClick = {
-                    selectedIndex.value = 1;
-                    navController.navigate("workout");
-                })
-
-            BottomNavigationItem(icon = {
-                Icon(imageVector = Icons.Default.Favorite,"")
-            },
-                label = { Text(text = "Favorite") },
-                selected = (selectedIndex.value == 2),
-                onClick = {
-                    selectedIndex.value = 2;
-                    navController.navigate("favorite");
-                })
-        }
+        NavigationRailItem(icon = {
+            Icon(imageVector = Icons.Default.Favorite,"")
+        },
+            label = { Text(text = "Favorite") },
+            selected = (selectedIndex.value == 2),
+            onClick = {
+                selectedIndex.value = 2;
+                navController.navigate("favorite");
+            })
     }
 }
 
