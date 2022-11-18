@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">EjemploClase</string>
     <string name="fav_workouts">Favorite Workouts</string>
+    <string name="favourites">Favourites</string>
+    <string name="workout">Workout</string>
+    <string name="discover">Discover</string>
+    <string name="no_fav_workouts">Add workouts to favourites</string>
     <string name="fav_remove">Removed from favourites</string>
+    <string name="settings_title">Settings</string>
     <string name="settings_lang">Language Settings</string>
     <string name="settings_account">Account Settings</string>
     <string name="settings_account_confirm">Confirm Logout?</string>

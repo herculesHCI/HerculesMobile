@@ -75,7 +75,7 @@ fun FavoriteContent(navController: NavHostController,viewModel: MainViewModel = 
 
         }
     } else {
-        ErrorMessage("Add workouts to favourites")
+        ErrorMessage(stringResource(id = R.string.no_fav_workouts))
     }
 }
 

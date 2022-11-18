@@ -1,9 +1,7 @@
 package com.example.ejemploclase
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -12,16 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.ejemploclase.data.network.util.getViewModelFactory
-import com.example.ejemploclase.ui.main.MainViewModel
 
 var openDialog = false
 
@@ -33,32 +24,35 @@ fun NavRail(navController: NavHostController) {
         NavigationRailItem(icon = {
             Icon(imageVector = Icons.Default.Explore,"")
         },
-            label = { Text(text = "Discover") },
+            label = { Text(text = stringResource(id = R.string.discover)) },
             selected = (selectedIndex.value == 0),
             onClick = {
                 selectedIndex.value = 0;
                 navController.navigate("discover");
-            })
+            },selectedContentColor = MaterialTheme.colors.secondary,
+            unselectedContentColor = Color.Black)
 
         NavigationRailItem(icon = {
             Icon(imageVector = Icons.Default.PlayCircle,"")
         },
-            label = { Text(text = "Workout") },
+            label = { Text(text = stringResource(id = R.string.workout)) },
             selected = (selectedIndex.value == 1),
             onClick = {
                 selectedIndex.value = 1;
                 navController.navigate("workout");
-            })
+            },selectedContentColor = MaterialTheme.colors.secondary,
+            unselectedContentColor = Color.Black)
 
         NavigationRailItem(icon = {
             Icon(imageVector = Icons.Default.Favorite,"")
         },
-            label = { Text(text = "Favorite") },
+            label = { Text(text = stringResource(id = R.string.favourites)) },
             selected = (selectedIndex.value == 2),
             onClick = {
                 selectedIndex.value = 2;
                 navController.navigate("favorite");
-            })
+            },selectedContentColor = MaterialTheme.colors.secondary,
+            unselectedContentColor = Color.Black)
     }
 }
 
@@ -78,7 +72,7 @@ fun AppBarCompact(navController: NavHostController, function: @Composable () -> 
                                 Icon(
                                         imageVector = Icons.Default.Settings ,
                                         contentDescription = null,
-                                ) //Ver Como verga mover hacia la derecha
+                                )
                             }
                         }
                 )
@@ -90,32 +84,35 @@ fun AppBarCompact(navController: NavHostController, function: @Composable () -> 
                     BottomNavigationItem(icon = {
                         Icon(imageVector = Icons.Default.Explore,"")
                     },
-                            label = { Text(text = "Discover") },
+                            label = { Text(text = stringResource(id = R.string.discover)) },
                             selected = (selectedIndex.value == 0),
                             onClick = {
                                 selectedIndex.value = 0;
                                 navController.navigate("discover");
-                            }, selectedContentColor = MaterialTheme.colors.secondary)
-
+                            },
+                        selectedContentColor = MaterialTheme.colors.secondary,
+                        unselectedContentColor = Color.Black)
                     BottomNavigationItem(icon = {
                         Icon(imageVector = Icons.Default.PlayCircle,"")
                     },
-                            label = { Text(text = "Workout") },
+                            label = { Text(text = stringResource(id = R.string.workout)) },
                             selected = (selectedIndex.value == 1),
                             onClick = {
                                 selectedIndex.value = 1;
-                                navController.navigate("workout");
-                            })
+                                navController.navigate("workout")
+                            },selectedContentColor = MaterialTheme.colors.secondary,
+                        unselectedContentColor = Color.Black)
 
                     BottomNavigationItem(icon = {
                         Icon(imageVector = Icons.Default.Favorite,"")
                     },
-                            label = { Text(text = "Favorite") },
+                            label = { Text(text = stringResource(R.string.favourites)) },
                             selected = (selectedIndex.value == 2),
                             onClick = {
                                 selectedIndex.value = 2;
                                 navController.navigate("favorite");
-                            })
+                            },selectedContentColor = MaterialTheme.colors.secondary,
+                        unselectedContentColor = Color.Black)
                 }
             },
 
@@ -140,7 +137,7 @@ fun AppBarExpanded(navController: NavHostController, function: @Composable () ->
                         Icon(
                             imageVector = Icons.Default.Settings ,
                             contentDescription = null,
-                        ) //Ver Como verga mover hacia la derecha
+                        )
                     }
                 }
             )
