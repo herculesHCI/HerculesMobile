@@ -6,9 +6,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -20,14 +17,12 @@ var openDialog = false
 fun NavRail(navController: NavHostController) {
     NavigationRail(elevation = 10.dp ,
         backgroundColor = Color.LightGray) {
-        val selectedIndex = remember { mutableStateOf(0) }
         NavigationRailItem(icon = {
             Icon(imageVector = Icons.Default.Explore,"")
         },
             label = { Text(text = stringResource(id = R.string.discover)) },
-            selected = (selectedIndex.value == 0),
+            selected = (navController?.currentDestination?.route == "discover"),
             onClick = {
-                selectedIndex.value = 0;
                 navController.navigate("discover");
             },selectedContentColor = MaterialTheme.colors.secondary,
             unselectedContentColor = Color.Black)
@@ -36,9 +31,8 @@ fun NavRail(navController: NavHostController) {
             Icon(imageVector = Icons.Default.PlayCircle,"")
         },
             label = { Text(text = stringResource(id = R.string.workout)) },
-            selected = (selectedIndex.value == 1),
+            selected = (navController?.currentDestination?.route == "workout"),
             onClick = {
-                selectedIndex.value = 1;
                 navController.navigate("workout");
             },selectedContentColor = MaterialTheme.colors.secondary,
             unselectedContentColor = Color.Black)
@@ -47,9 +41,8 @@ fun NavRail(navController: NavHostController) {
             Icon(imageVector = Icons.Default.Favorite,"")
         },
             label = { Text(text = stringResource(id = R.string.favourites)) },
-            selected = (selectedIndex.value == 2),
+            selected = (navController?.currentDestination?.route == "favorite"),
             onClick = {
-                selectedIndex.value = 2;
                 navController.navigate("favorite");
             },selectedContentColor = MaterialTheme.colors.secondary,
             unselectedContentColor = Color.Black)
@@ -78,16 +71,14 @@ fun AppBarCompact(navController: NavHostController, function: @Composable () -> 
                 )
              },
             bottomBar = {
-                val selectedIndex = remember { mutableStateOf(0) }
                 BottomNavigation(elevation = 10.dp ,
                         backgroundColor = Color.LightGray) {
                     BottomNavigationItem(icon = {
                         Icon(imageVector = Icons.Default.Explore,"")
                     },
                             label = { Text(text = stringResource(id = R.string.discover)) },
-                            selected = (selectedIndex.value == 0),
+                        selected = (navController?.currentDestination?.route == "discover"),
                             onClick = {
-                                selectedIndex.value = 0;
                                 navController.navigate("discover");
                             },
                         selectedContentColor = MaterialTheme.colors.secondary,
@@ -96,9 +87,8 @@ fun AppBarCompact(navController: NavHostController, function: @Composable () -> 
                         Icon(imageVector = Icons.Default.PlayCircle,"")
                     },
                             label = { Text(text = stringResource(id = R.string.workout)) },
-                            selected = (selectedIndex.value == 1),
+                            selected = (navController?.currentDestination?.route == "workout"),
                             onClick = {
-                                selectedIndex.value = 1;
                                 navController.navigate("workout")
                             },selectedContentColor = MaterialTheme.colors.secondary,
                         unselectedContentColor = Color.Black)
@@ -107,12 +97,12 @@ fun AppBarCompact(navController: NavHostController, function: @Composable () -> 
                         Icon(imageVector = Icons.Default.Favorite,"")
                     },
                             label = { Text(text = stringResource(R.string.favourites)) },
-                            selected = (selectedIndex.value == 2),
+                        selected = (navController?.currentDestination?.route == "favorite"),
+                        selectedContentColor = MaterialTheme.colors.secondary,
+                        unselectedContentColor = Color.Black,
                             onClick = {
-                                selectedIndex.value = 2;
                                 navController.navigate("favorite");
-                            },selectedContentColor = MaterialTheme.colors.secondary,
-                        unselectedContentColor = Color.Black)
+                            })
                 }
             },
 
