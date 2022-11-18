@@ -20,6 +20,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,6 +57,7 @@ fun WorkoutScreen(navController: NavHostController, workoutId: Int ,viewModel: M
 
 @Composable
 fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: MainViewModel) {
+    var isDetailed = remember { mutableStateOf(false)  }
     if(workoutId == 0){
         ErrorMessage(message = "Choose a workout from your favorites to start training")
     } else {
@@ -97,6 +100,21 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                         color = MaterialTheme.colors.background
                                     )
                                 }
+
+                                Spacer(Modifier.weight(1f))
+
+                                Button(
+                                    onClick = {
+                                        isDetailed.value = !isDetailed.value
+                                    },
+                                    colors = ButtonDefaults.buttonColors(MaterialTheme.colors.secondary)
+                                ){
+                                    var str = "Simple Mode"
+                                    if(isDetailed.value){
+                                        str = "Detailed Mode"
+                                    }
+                                    Text(str)
+                                }
                             }
                             Row(modifier = Modifier.padding(15.dp, 5.dp)) {
                                 workout?.category?.name?.let {
@@ -128,7 +146,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                                         .background(MaterialTheme.colors.background)
                                                         .padding(15.dp)
                                                     ){
-                                                        Cycle(cycle = cycle)
+                                                        Cycle(cycle = cycle, isDetailed.value)
                                                     }
                                                 }
                                             }
@@ -286,7 +304,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
 }
 
 @Composable
-fun Cycle(cycle: Cycle){
+fun Cycle(cycle: Cycle, isDetailed: Boolean){
     Column() {
         Row(modifier = Modifier.padding(15.dp, 5.dp)) {
             Text(
@@ -304,9 +322,17 @@ fun Cycle(cycle: Cycle){
                 for(exercise in cycle.getExercises()!!){
                     val checkedState = rememberSaveable { mutableStateOf(false) }
                     Row(modifier = Modifier.padding(15.dp,3.dp)){
+                        var str : String = ""
+                        if(isDetailed){
+                             str = "   " + exercise.duration.toString() + " x " + exercise.repetitions.toString() + " rep"
+                        }
+
                         LabelledCheckbox(checked = checkedState.value,
                             onCheckedChange = { checkedState.value = it },
-                            label = exercise.baseExercise.name)
+                            label = exercise.baseExercise.name + str )
+                    }
+                    if( isDetailed ){
+                        Text( exercise.baseExercise.detail , fontSize = 12.sp , fontStyle = FontStyle.Italic, fontWeight = FontWeight.ExtraLight )
                     }
                 }
             }
