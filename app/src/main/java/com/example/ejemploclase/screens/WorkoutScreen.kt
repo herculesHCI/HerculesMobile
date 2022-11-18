@@ -16,6 +16,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -168,7 +169,16 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                                 .size(40.dp)
                                         )
                                     }
-
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    IconButton(onClick = { /*TODO Share button*/}) {
+                                        Icon(imageVector = Icons.Default.Share,
+                                            contentDescription = null,
+                                            tint = Color.Black,
+                                            modifier = Modifier
+                                                .padding(15.dp)
+                                                .size(40.dp)
+                                        )
+                                    }
                                     IconButton(onClick = {
                                         navController.navigate("discover")
                                     }) {
