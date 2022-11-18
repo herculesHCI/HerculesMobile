@@ -51,7 +51,7 @@ val filters : HashMap<String,Filter> = HashMap<String,Filter>()
 @Composable
 fun DiscoverContent(filter: Filter, viewModel: MainViewModel, navController: NavHostController){
     val uiState = viewModel.uiState
-    if(!uiState.canGetRoutines){
+    if(!uiState.canGetRoutines && !uiState.isFetching){
         viewModel.getRoutines(filter.orderBy,filter.direction,filter.categoryId)
         // TODO ERR_MSG si routines es NULL
     }
