@@ -1,6 +1,5 @@
 package com.example.ejemploclase.screens
 
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,10 +15,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.ShareCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
 import com.example.ejemploclase.data.network.util.getViewModelFactory
+import com.example.ejemploclase.screens.utils.ErrorMessage
+import com.example.ejemploclase.screens.utils.shareApp
 import com.example.ejemploclase.ui.main.MainViewModel
 import com.example.ejemploclase.ui.main.canGetRoutine
 
@@ -64,7 +63,10 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                         )
                     }
                     Spacer( modifier = Modifier.weight(1f))
-                    IconButton(onClick = { /*TODO Share button*/}) {
+                    val context = LocalContext.current
+                    IconButton(onClick = {
+                        shareApp(context)
+                    }) {
                         Icon(imageVector = Icons.Default.Share,
                             contentDescription = null,
                             tint = Color.Black,

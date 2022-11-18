@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
-            //viewModel.login("pedro","pass")
             NavHost(navController = navController, startDestination = "start") {
                 composable( route = "start"){
                     if (viewModel.uiState.isAuthenticated) {
