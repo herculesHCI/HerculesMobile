@@ -11,10 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
@@ -27,22 +24,22 @@ import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.navArgument
+import kotlinx.coroutines.delay
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun LogInScreen( viewModel: MainViewModel = viewModel(factory = getViewModelFactory())) {
+fun LogInScreen(navController: NavHostController, viewModel: MainViewModel = viewModel(factory = getViewModelFactory())) {
     // A surface container using the 'background' color from the theme
 
     val coroutineScope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
-    val bringIntoViewRequester = BringIntoViewRequester()
 
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.primary
     ) {
-
 
         Column(
             modifier = Modifier
@@ -69,14 +66,7 @@ fun LogInScreen( viewModel: MainViewModel = viewModel(factory = getViewModelFact
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
-                    .onFocusEvent { event ->
-                        if (event.isFocused) {
-                            coroutineScope.launch {
-                                bringIntoViewRequester.bringIntoView()
-                            }
-                        }
-                    },
+                    .padding(10.dp),
                 label = { Text(text = "Username") },
                 value = username.value,
                 onValueChange = { username.value = it },
@@ -92,14 +82,7 @@ fun LogInScreen( viewModel: MainViewModel = viewModel(factory = getViewModelFact
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
-                    .onFocusEvent { event ->
-                        if (event.isFocused) {
-                            coroutineScope.launch {
-                                bringIntoViewRequester.bringIntoView()
-                            }
-                        }
-                    },
+                    .padding(10.dp),
                 label = { Text(text = "Password") },
                 value = password.value,
                 visualTransformation = PasswordVisualTransformation(),
@@ -119,13 +102,20 @@ fun LogInScreen( viewModel: MainViewModel = viewModel(factory = getViewModelFact
             Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
                 Button(
                     onClick = {
-                              viewModel.login(username.value.toString(),password.value.toString())
+                        if(!viewModel.uiState.isFetching){
+                            viewModel.login(username.value.text , password.value.text)
+                            coroutineScope.launch {
+                                delay(250)
+                                if(viewModel.uiState.isAuthenticated){
+                                    navController.navigate("discover")
+                                }
+                            }
+                        }
                     },
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(80.dp)
-                        .bringIntoViewRequester(bringIntoViewRequester),
+                        .height(80.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color.Black)
                 ) {
                     Icon(
