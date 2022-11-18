@@ -36,19 +36,17 @@ import com.example.ejemploclase.ui.main.canGetRoutine
 
 @Composable
 fun WorkoutScreen(navController: NavHostController, workoutId: Int ,viewModel: MainViewModel = viewModel(factory = getViewModelFactory()) ){
-    com.example.ejemploclase.AppBar(navController) {
+    com.example.ejemploclase.AppBarCompact(navController) {
         val configuration = LocalConfiguration.current
         when (configuration.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> {
                 WorkoutContent(workoutId, navController, viewModel)
             }
-
             // Other wise
             else -> {
                 WorkoutContent(workoutId, navController, viewModel)
             }
         }
-
     }
 }
 

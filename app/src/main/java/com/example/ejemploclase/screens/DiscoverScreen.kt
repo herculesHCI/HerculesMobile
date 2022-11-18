@@ -9,6 +9,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.ejemploclase.AppBarExpanded
 import com.example.ejemploclase.Filter
 import com.example.ejemploclase.data.model.Workout
 import com.example.ejemploclase.data.network.util.getViewModelFactory
@@ -27,7 +30,7 @@ import com.example.ejemploclase.ui.main.MainViewModel
 import com.example.ejemploclase.ui.main.canGetRoutines
 
 @Composable
-fun DiscoverScreen(navController: NavHostController,filterName: String? = "Highest Rated",viewModel: MainViewModel = viewModel(factory = getViewModelFactory())){
+fun DiscoverScreen(navController: NavHostController,filterName: String? = "Highest Rated",windowSizeClass: WindowSizeClass,viewModel: MainViewModel = viewModel(factory = getViewModelFactory())){
     if(filters.isEmpty()){
         filters.put("Back",Filter("score","desc",1,"Back Workouts"))
         filters.put("Legs",Filter("score","desc",2,"Leg Workouts"))
@@ -42,9 +45,16 @@ fun DiscoverScreen(navController: NavHostController,filterName: String? = "Highe
         filters.put("Highest Rated", Filter("score","desc",null,"Highest Rated"))
         filters.put("Oldest Workouts", Filter("date","asc",null,"Oldest Workouts"))
     }
-    com.example.ejemploclase.AppBar(navController) {
-        filters[filterName]?.let { DiscoverContent(it, viewModel, navController) }
+    if(windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium){
+        AppBarExpanded(navController) {
+            filters[filterName]?.let { DiscoverContent(it, viewModel, navController) }
+        }
+    } else {
+        com.example.ejemploclase.AppBarCompact(navController) {
+            filters[filterName]?.let { DiscoverContent(it, viewModel, navController) }
+        }
     }
+
 }
 val filters : HashMap<String,Filter> = HashMap<String,Filter>()
 

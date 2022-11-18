@@ -4,6 +4,8 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -25,6 +27,7 @@ class MainActivity : ComponentActivity() {
 
     lateinit var navController: NavHostController
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -42,6 +45,7 @@ class MainActivity : ComponentActivity() {
                 viewModel.makeCategory(Category(9,"Full Body","Full Body"))
                 categoriesExist = true
             }
+            val windowSizeClass = calculateWindowSizeClass(activity = this)
             NavHost(navController = navController, startDestination = "start") {
                 composable( route = "start"){
                     if (viewModel.uiState.isAuthenticated) {
@@ -59,10 +63,10 @@ class MainActivity : ComponentActivity() {
                     })
                 ) { navBackStackEntry ->
                     val name = navBackStackEntry.arguments?.getString("filterName","Highest Rated")
-                    DiscoverScreen(navController, name)
+                    DiscoverScreen(navController, name,windowSizeClass)
                 }
                 composable(route = "discover") {
-                    DiscoverScreen(navController, "Highest Rated")
+                    DiscoverScreen(navController, "Highest Rated",windowSizeClass)
                 }
                 composable("favorite") {
                     FavoriteScreen(navController)

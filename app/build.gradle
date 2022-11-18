@@ -24,23 +24,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // No usar localhost o la IP 127.0.0.1 porque es la interfaz de loopback
-            // del emulador. La forma de salir del emulador para acceder al localhost
-            // de host del mismo es usando la IP 10.0.2.2.
             buildConfigField "String", "API_BASE_URL",
-                    "\"http://192.168.1.107:8080/api/\"" // En vez de 192.168.1.107 pongan su ip!
-                                                        // abran cmd y pongan "ipconfig"
-                                                        // y peguen el ipv4 address
-                                                        // quedando http://suip:8080/api/
-                                                        // (en el puerto 8080 debe estar la api)
-                                                        // SOLO PARA CEL FISICO
+                    "\"http://192.168.1.107:8080/api/\""
         }
         debug {
-            // No usar localhost o la IP 127.0.0.1 porque es la interfaz de loopback
-            // del emulador. La forma de salir del emulador para acceder al localhost
-            // de host del mismo es usando la IP 10.0.2.2.
             buildConfigField "String", "API_BASE_URL",
-                    "\"http://192.168.1.107:8080/api/\"" // Aca lo mismo que en release
+                    "\"http://192.168.1.107:8080/api/\""
         }
     }
     compileOptions {
@@ -85,5 +74,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
-
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    implementation "androidx.compose.material3:material3-window-size-class:1.0.1"
 }

@@ -15,7 +15,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun FilterScreen(navController: NavHostController){
-    AppBar(navController = navController) {
+    AppBarCompact(navController = navController) {
         FilterContent(navController)
     }
 }

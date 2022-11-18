@@ -29,7 +29,7 @@ fun PreviewScreen(navController: NavHostController , workoutId : Int?,viewModel:
     factory = getViewModelFactory()
 )
 ){
-    com.example.ejemploclase.AppBar(navController) {
+    com.example.ejemploclase.AppBarCompact(navController) {
         PreviewContent(navController, workoutId, viewModel)
     }
 }

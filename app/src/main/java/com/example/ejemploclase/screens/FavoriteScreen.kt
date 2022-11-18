@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.ejemploclase.AppBar
+import com.example.ejemploclase.AppBarCompact
 import com.example.ejemploclase.data.model.Workout
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
@@ -37,7 +37,7 @@ import com.example.ejemploclase.ui.main.canGetFavourites
 @Composable
 fun FavoriteScreen(navController: NavHostController,viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
 ) {
-    AppBar(navController) {
+    AppBarCompact(navController) {
         FavoriteContent(navController,viewModel)
     }
 }
