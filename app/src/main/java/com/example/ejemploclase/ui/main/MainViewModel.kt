@@ -13,6 +13,7 @@ import com.example.ejemploclase.data.repository.RoutineRepository
 import com.example.ejemploclase.data.repository.SportRepository
 import com.example.ejemploclase.data.repository.UserRepository
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainViewModel(
     private val sessionManager: SessionManager,
@@ -318,5 +319,35 @@ class MainViewModel(
     fun isFavourite(routine: Workout) : Boolean {
         return favoriteRepository.isFavourite(routine)
     }
+
+    private var settedLanguage = false
+    private var language = getLanguage()
+
+
+    fun getLanguage(): String{
+        if(!settedLanguage){
+            setLanguage(Locale.getDefault().getLanguage())
+            settedLanguage = true
+        }
+        return language;
+    }
+
+
+    fun setLanguage( lang : String ){
+        /*val langOptions =  arrayOf("en","es")
+        for(l in langOptions){
+            if( lang == l ){
+                this.language = l;
+                return;
+            }
+        }*/
+        language = lang
+    }
+
+    val languageOptions =  arrayOf("en","es")
+    fun getPossibleLanguages(): Array<String> {
+        return languageOptions
+    }
+
 
 }

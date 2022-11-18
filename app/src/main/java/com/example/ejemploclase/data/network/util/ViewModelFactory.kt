@@ -28,7 +28,7 @@ class ViewModelFactory constructor(
     ) = with(modelClass) {
         when {
             isAssignableFrom(MainViewModel::class.java) ->
-                MainViewModel(sessionManager, userRepository, sportRepository, routineRepository, favoriteRepository)
+                MainViewModel(sessionManager, userRepository, sportRepository, routineRepository, favoriteRepository )
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
