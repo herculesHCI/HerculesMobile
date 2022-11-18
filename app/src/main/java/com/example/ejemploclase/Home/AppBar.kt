@@ -120,8 +120,10 @@ fun AppBarCompact(navController: NavHostController, function: @Composable () -> 
                 }
             },
 
-    ) { innerPadding -> Box(modifier = Modifier.padding(innerPadding))
-        function()
+    ) { innerPadding -> Box(modifier = Modifier.padding(innerPadding)) {
+            function()
+        }
+
     }
 }
 
