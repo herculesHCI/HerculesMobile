@@ -20,7 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.ejemploclase.AppBarCompact
 import com.example.ejemploclase.R
@@ -53,7 +56,10 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
                     )
                 }
 
-                Text(stringResource(R.string.settings_lang))
+                Spacer(Modifier.fillMaxWidth().height(15.dp))
+
+                Text(stringResource(R.string.settings_lang), fontWeight = FontWeight.SemiBold , fontSize = 25.sp ,
+                modifier = Modifier.padding(bottom=5.dp))
                 var expanded = remember { mutableStateOf(false) }
                 var currentLanguage: MutableState<String> = mutableStateOf( Locale.getDefault().getLanguage() )
 
@@ -101,7 +107,10 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
 
                 }
 
-                Text(stringResource(R.string.settings_account))
+                Spacer(Modifier.fillMaxWidth().height(15.dp))
+
+                Text(stringResource(R.string.settings_account), fontWeight = FontWeight.SemiBold , fontSize = 25.sp,
+                    modifier = Modifier.padding(bottom=5.dp))
 
                 val openDialog = remember { mutableStateOf(false)  }
 
