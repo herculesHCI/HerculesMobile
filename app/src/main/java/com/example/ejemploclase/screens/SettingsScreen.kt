@@ -24,6 +24,7 @@ import com.example.ejemploclase.AppBarCompact
 import com.example.ejemploclase.R
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
+import com.example.ejemploclase.ui.main.canGetCurrentUser
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
@@ -33,6 +34,7 @@ import kotlin.math.log
 @Composable
 fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = getViewModelFactory())) {
     AppBarCompact(navController = navController) {
+        viewModel.getCurrentUser()
         Box(modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
@@ -58,7 +60,9 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
                     }
                 }
 
-                Spacer(Modifier.fillMaxWidth().height(15.dp))
+                Spacer(Modifier
+                    .fillMaxWidth()
+                    .height(15.dp))
 
                 Text(stringResource(R.string.settings_lang), fontWeight = FontWeight.SemiBold , fontSize = 20.sp ,
                 modifier = Modifier.padding(bottom=5.dp))
@@ -109,17 +113,23 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
 
                 }
 
-                Spacer(Modifier.fillMaxWidth().height(15.dp))
+                Spacer(Modifier
+                    .fillMaxWidth()
+                    .height(15.dp))
 
                 Text(stringResource(R.string.settings_account), fontWeight = FontWeight.SemiBold , fontSize = 20.sp,
                     modifier = Modifier.padding(bottom=5.dp))
+
+                if(viewModel.uiState.canGetCurrentUser){
+                    Text(text = stringResource(R.string.logged_in_as).plus(": ").plus(viewModel.uiState.currentUser?.username))
+                }
 
                 val openDialog = remember { mutableStateOf(false)  }
 
                 Button(onClick = {
                     openDialog.value = true
                 }) {
-                    Text("Logout")
+                    Text(stringResource(R.string.logout))
                 }
 
                 val coroutineScope = rememberCoroutineScope()
