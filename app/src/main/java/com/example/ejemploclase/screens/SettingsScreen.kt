@@ -17,9 +17,11 @@ import androidx.compose.material.icons.filled.MoveDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.ejemploclase.R
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
 import kotlinx.coroutines.delay
@@ -48,7 +50,7 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
                 )
             }
 
-            Text("Language Settings")
+            Text(stringResource(R.string.settings_lang))
             var expanded = remember { mutableStateOf(false) }
             var currentLanguage: MutableState<String> = mutableStateOf( viewModel.getLanguage() )
 
@@ -86,7 +88,7 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
 
             }
 
-            Text("Account Settings")
+            Text(stringResource(R.string.settings_account))
 
             val openDialog = remember { mutableStateOf(false)  }
 
@@ -105,7 +107,7 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
                         openDialog.value = false
                     },
                     title = {
-                        Text(text = "Confirm Logout?")
+                        Text(text = stringResource(R.string.settings_account_confirm))
                     },
                     dismissButton = {
                         Button(
@@ -118,7 +120,7 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
                                 contentColor = Color.White
                             ))
                             {
-                            Text("CANCEL")
+                            Text(stringResource(R.string.settings_logout_cancel))
                         }
                     },
                     confirmButton = {
