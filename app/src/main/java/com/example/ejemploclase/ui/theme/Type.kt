@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.ejemploclase.R
 
+val Dalek = FontFamily(Font(R.font.dalekpinpointbold))
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -16,6 +17,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
+    h1 = TextStyle(
+        fontFamily = Dalek,
+        fontWeight = FontWeight.Bold,
+        fontSize = 22.sp
+    )
     /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,
