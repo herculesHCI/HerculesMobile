@@ -120,17 +120,6 @@ fun WorkoutElement(item: Workout,navController: NavHostController) {
                         imageVector = Icons.Default.StarBorder ,
                         contentDescription = null
                     )
-                    IconButton(onClick = { /*TODO*/ }) {//Deberia marcarlo como fav
-                        if(true){ // TODO ver si es fav o no
-                            Icon(imageVector = Icons.Default.Favorite,
-                                contentDescription = null,
-                                tint = MaterialTheme.colors.secondary)
-                        } else {
-                            Icon(imageVector = Icons.Default.FavoriteBorder,
-                                contentDescription = null,
-                                tint = MaterialTheme.colors.secondary)
-                        }
-                    }
                 }
             }
         }
