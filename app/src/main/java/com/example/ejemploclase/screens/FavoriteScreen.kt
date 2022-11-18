@@ -14,6 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -129,7 +130,7 @@ fun WorkoutFavElement(item: Workout,navController: NavHostController,viewModel: 
                     IconButton(onClick = {
                         navController.navigate("workout/${item.id}")
                     }) { //Deberia pasar a la screen de workout
-                        Icon(imageVector = Icons.Default.PlayArrow,
+                        Icon(imageVector = Icons.Default.PlayCircle,
                             contentDescription = null,
                             tint = MaterialTheme.colors.secondary
                         )

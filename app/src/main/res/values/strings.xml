@@ -13,6 +13,8 @@
     <string name="settings_logout_cancel">CANCEL</string>
     <string name="prev_added_fav">Added to favourites</string>
     <string name="by">by </string>
+    <string name="logged_in_as">Logged in as</string>
+    <string name="logout">Logout</string>
     <string name="prev_err_no_exercises">This Cycle doesn\'t have any exercises</string>
     <string name="prev_err_no_cycles">This workout doesn\'t have any cycles</string>
     <string name="prev_err">There seems to be an error :/</string>
