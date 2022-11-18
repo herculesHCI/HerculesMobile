@@ -15,9 +15,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ejemploclase.FilterScreen
+import com.example.ejemploclase.data.model.Category
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.screens.*
 
+var categoriesExist = false
 
 class MainActivity : ComponentActivity() {
 
@@ -28,6 +30,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
+            if(!categoriesExist) {
+                viewModel.makeCategory(Category(1,"Back","Back"))
+                viewModel.makeCategory(Category(2,"Legs","Legs"))
+                viewModel.makeCategory(Category(3,"Push","Push"))
+                viewModel.makeCategory(Category(4,"Pull","Pull"))
+                viewModel.makeCategory(Category(5,"Upper","Upper"))
+                viewModel.makeCategory(Category(6,"Abs","Abs"))
+                viewModel.makeCategory(Category(7,"Arms","Arms"))
+                viewModel.makeCategory(Category(8,"Cardio","Cardio"))
+                viewModel.makeCategory(Category(9,"Full Body","Full Body"))
+                categoriesExist = true
+            }
             NavHost(navController = navController, startDestination = "start") {
                 composable( route = "start"){
                     if (viewModel.uiState.isAuthenticated) {

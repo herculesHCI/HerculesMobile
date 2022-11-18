@@ -1,6 +1,5 @@
 package com.example.ejemploclase.screens
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -27,12 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.ejemploclase.BuildConfig
-import com.example.ejemploclase.R
 import com.example.ejemploclase.data.model.*
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.screens.utils.ErrorMessage
-import com.example.ejemploclase.screens.utils.shareApp
+import com.example.ejemploclase.screens.utils.shareWorkout
 import com.example.ejemploclase.ui.main.MainViewModel
 import com.example.ejemploclase.ui.main.canGetRoutine
 
@@ -195,7 +192,9 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                     Spacer(modifier = Modifier.weight(1f))
                                     val context = LocalContext.current
                                     IconButton(onClick = {
-                                        shareApp(context)
+                                        if (workout != null) {
+                                            shareWorkout(context,workout.id)
+                                        }
                                     }) {
                                         Icon(imageVector = Icons.Default.Share,
                                             contentDescription = null,

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ejemploclase.data.model.Category
 import com.example.ejemploclase.data.model.Sport
 import com.example.ejemploclase.data.model.Workout
 import com.example.ejemploclase.data.network.util.SessionManager
@@ -32,7 +33,7 @@ class MainViewModel(
             message = null
         )
         runCatching {
-            userRepository.login(username, password) // TODO HARDCODDEOOOO
+            userRepository.login(username, password)
         }.onSuccess { response ->
             uiState = uiState.copy(
                 isFetching = false,
@@ -160,7 +161,7 @@ class MainViewModel(
         )
         runCatching {
             sportRepository.deleteSport(sportId)
-        }.onSuccess { response ->
+        }.onSuccess {
             uiState = uiState.copy(
                 isFetching = false,
                 currentSport = null,
@@ -262,7 +263,7 @@ class MainViewModel(
         )
         runCatching {
             favoriteRepository.markFavourite(routineId)
-        }.onSuccess { response ->
+        }.onSuccess {
             uiState = uiState.copy(
                 isFetching = false,
                 favChanged = true
@@ -282,7 +283,7 @@ class MainViewModel(
         )
         runCatching {
             favoriteRepository.deleteFavourite(routineId)
-        }.onSuccess { response ->
+        }.onSuccess {
             uiState = uiState.copy(
                 isFetching = false,
                 favChanged = true
@@ -303,10 +304,28 @@ class MainViewModel(
         )
         runCatching {
             routineRepository.makeRoutineReview(routineId,rating)
-        }.onSuccess { response ->
+        }.onSuccess {
             uiState = uiState.copy(
                 isFetching = false,
-                favChanged = true
+            )
+        }.onFailure { e ->
+            // Handle the error and notify the UI when appropriate.
+            uiState = uiState.copy(
+                message = e.message,
+                isFetching = false)
+        }
+    }
+
+    fun makeCategory(category: Category) = viewModelScope.launch {
+        uiState = uiState.copy(
+            isFetching = true,
+            message = null
+        )
+        runCatching {
+            routineRepository.makeCategory(category)
+        }.onSuccess {
+            uiState = uiState.copy(
+                isFetching = false
             )
         }.onFailure { e ->
             // Handle the error and notify the UI when appropriate.

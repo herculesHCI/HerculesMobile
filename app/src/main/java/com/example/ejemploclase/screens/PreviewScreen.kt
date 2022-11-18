@@ -1,5 +1,6 @@
 package com.example.ejemploclase.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -18,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.screens.utils.ErrorMessage
-import com.example.ejemploclase.screens.utils.shareApp
+import com.example.ejemploclase.screens.utils.shareWorkout
 import com.example.ejemploclase.ui.main.MainViewModel
 import com.example.ejemploclase.ui.main.canGetRoutine
 
@@ -65,7 +66,9 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                     Spacer( modifier = Modifier.weight(1f))
                     val context = LocalContext.current
                     IconButton(onClick = {
-                        shareApp(context)
+                        if (workout != null) {
+                            shareWorkout(context,workout.id)
+                        }
                     }) {
                         Icon(imageVector = Icons.Default.Share,
                             contentDescription = null,
@@ -75,32 +78,19 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                 .size(40.dp)
                         )
                     }
-                    if(isFav == true) {
-                        IconButton(onClick = {
-                            workout.id.let { viewModel.deleteFavorite(it) }
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.Favorite,
-                                contentDescription = null,
-                                tint = Color.Black,
-                                modifier = Modifier
-                                    .padding(15.dp)
-                                    .size(40.dp)
-                            )
-                        }
-                    } else {
-                        IconButton(onClick = {
-                            workout?.id?.let { viewModel.markFavorite(it) }
-                        }) {
-                            Icon(
-                                imageVector = Icons.Default.FavoriteBorder,
-                                contentDescription = null,
-                                tint = Color.Black,
-                                modifier = Modifier
-                                    .padding(15.dp)
-                                    .size(40.dp)
-                            )
-                        }
+                    val mContext = LocalContext.current
+                    IconButton(onClick = {
+                        workout?.id?.let { viewModel.markFavorite(it) }
+                        Toast.makeText(mContext, "Added to favourites", Toast.LENGTH_LONG).show()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = null,
+                            tint = Color.Black,
+                            modifier = Modifier
+                                .padding(15.dp)
+                                .size(40.dp)
+                        )
                     }
                 }
                 Card(shape = RoundedCornerShape(6.dp),

@@ -21,7 +21,7 @@ class MyApplication : Application() {
         get() = SportRemoteDataSource(RetrofitClient.getApiSportService(this))
 
     private val routineRemoteDataSource: RoutineRemoteDataSource
-        get() = RoutineRemoteDataSource(RetrofitClient.getApiRoutineService(this),RetrofitClient.getApiReviewService(this))
+        get() = RoutineRemoteDataSource(RetrofitClient.getApiRoutineService(this),RetrofitClient.getApiReviewService(this),RetrofitClient.getApiCategoryService(this))
 
     private val favouriteRemoteDataSource: FavoriteRemoteDataSource
         get() = FavoriteRemoteDataSource(RetrofitClient.getApiFavouriteService(this))

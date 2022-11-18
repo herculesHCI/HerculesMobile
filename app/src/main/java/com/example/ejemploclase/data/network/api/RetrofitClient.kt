@@ -58,4 +58,8 @@ object RetrofitClient {
     fun getApiReviewService(context: Context): ApiReviewService {
         return getInstance(context).create(ApiReviewService::class.java)
     }
+
+    fun getApiCategoryService(context: Context) : ApiCategoryService {
+        return getInstance(context).create(ApiCategoryService::class.java)
+    }
 }
