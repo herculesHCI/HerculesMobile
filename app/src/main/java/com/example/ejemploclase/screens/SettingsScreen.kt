@@ -53,14 +53,14 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
                             )
                         }
                         Text(text= stringResource(R.string.settings_title),
-                            fontSize = 19.sp,
+                            fontSize = 25.sp,
                             fontWeight = FontWeight.Bold)
                     }
                 }
 
                 Spacer(Modifier.fillMaxWidth().height(15.dp))
 
-                Text(stringResource(R.string.settings_lang), fontWeight = FontWeight.SemiBold , fontSize = 25.sp ,
+                Text(stringResource(R.string.settings_lang), fontWeight = FontWeight.SemiBold , fontSize = 20.sp ,
                 modifier = Modifier.padding(bottom=5.dp))
                 var expanded = remember { mutableStateOf(false) }
                 var currentLanguage: MutableState<String> = mutableStateOf( Locale.getDefault().getLanguage() )
@@ -111,7 +111,7 @@ fun SettingsScreen(navController: NavHostController, viewModel: MainViewModel = 
 
                 Spacer(Modifier.fillMaxWidth().height(15.dp))
 
-                Text(stringResource(R.string.settings_account), fontWeight = FontWeight.SemiBold , fontSize = 25.sp,
+                Text(stringResource(R.string.settings_account), fontWeight = FontWeight.SemiBold , fontSize = 20.sp,
                     modifier = Modifier.padding(bottom=5.dp))
 
                 val openDialog = remember { mutableStateOf(false)  }
