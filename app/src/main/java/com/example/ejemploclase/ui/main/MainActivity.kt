@@ -20,17 +20,18 @@ import com.example.ejemploclase.FilterScreen
 import com.example.ejemploclase.data.model.Category
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.screens.*
+import com.example.ejemploclase.ui.theme.EjemploClaseTheme
 
 var categoriesExist = false
 
 class MainActivity : ComponentActivity() {
 
-    lateinit var navController: NavHostController
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            EjemploClaseTheme {
             val navController = rememberNavController()
             val viewModel: MainViewModel = viewModel(factory = getViewModelFactory())
             if(!categoriesExist) {
@@ -48,16 +49,17 @@ class MainActivity : ComponentActivity() {
             val windowSizeClass = calculateWindowSizeClass(activity = this)
             NavHost(navController = navController, startDestination = "start") {
                 composable( route = "start"){
-                    if (viewModel.uiState.isAuthenticated) {
-                        navController.navigate("discover")
-                    }else{
-                        navController.navigate("login")
-                    }
+                        if (viewModel.uiState.isAuthenticated) {
+                            navController.navigate("discover")
+                        } else {
+                            navController.navigate("login")
+                        }
                 }
                 composable( route = "login"){
-                    LogInScreen(navController)
+                        LogInScreen(navController)
                 }
                 composable(route = "discover/{filterName}",
+
                     arguments = listOf(navArgument("filterName") {
                         type = NavType.StringType
                     })
@@ -115,5 +117,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
+    }}
 }

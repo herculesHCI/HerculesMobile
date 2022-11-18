@@ -13,10 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.ejemploclase.R
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.screens.utils.ErrorMessage
 import com.example.ejemploclase.screens.utils.shareWorkout
@@ -79,9 +81,10 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                         )
                     }
                     val mContext = LocalContext.current
+                    val prev_added_fav = stringResource(R.string.prev_added_fav)
                     IconButton(onClick = {
                         workout?.id?.let { viewModel.markFavorite(it) }
-                        Toast.makeText(mContext, "Added to favourites", Toast.LENGTH_LONG).show()
+                        Toast.makeText(mContext, prev_added_fav , Toast.LENGTH_LONG).show()
                     }) {
                         Icon(
                             imageVector = Icons.Default.Favorite,
@@ -131,16 +134,16 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                     .padding(top = 5.dp),
                             )
                         }
-                        workout?.category?.let { //Se hizo el chequeo antes
+                        val let = workout?.category?.let { //Se hizo el chequeo antes
                             Text(                               //pero no permite hacerlo sin el let
-                                modifier = Modifier.padding(top=7.dp),
-                                text= it.name,
+                                modifier = Modifier.padding(top = 7.dp),
+                                text = it.name,
                                 fontSize = 25.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         }
                         Text(
-                            text = "by " + workout?.user?.username,
+                            text = stringResource(R.string.by) + workout?.user?.username,
                             fontSize = 25.sp,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(vertical = 10.dp)
@@ -166,7 +169,7 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                                 )
                                             }
                                         } else {
-                                            ErrorMessage(message = "This Cycle doesn't have any exercises")
+                                            ErrorMessage(message = stringResource(R.string.prev_err_no_exercises))
                                         }
                                         Spacer(modifier = Modifier
                                             .fillMaxWidth()
@@ -174,7 +177,7 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                     }
                                 }
                             } else {
-                                ErrorMessage("This workout doesn't have any cycles")
+                                ErrorMessage(stringResource(R.string.prev_err_no_cycles))
                             }
                         }
                         Spacer(modifier = Modifier.height(50.dp))
@@ -183,7 +186,7 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
             }
         }
     } else {
-        ErrorMessage("There seems to be an error :/")
+        ErrorMessage(stringResource(R.string.prev_err))
     }
 }
 

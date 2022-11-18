@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.ejemploclase.R
 import com.example.ejemploclase.data.model.*
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.screens.utils.ErrorMessage
@@ -54,7 +56,7 @@ fun WorkoutScreen(navController: NavHostController, workoutId: Int ,viewModel: M
 fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: MainViewModel) {
     var isDetailed = remember { mutableStateOf(false)  }
     if(workoutId == 0){
-        ErrorMessage(message = "Choose a workout from your favorites to start training")
+        ErrorMessage(message = stringResource(R.string.workout_choose_fav))
     } else {
         val uiState = viewModel.uiState
         if(!uiState.canGetRoutine && !viewModel.uiState.isFetching){
@@ -104,9 +106,9 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                     },
                                     colors = ButtonDefaults.buttonColors(MaterialTheme.colors.secondary)
                                 ){
-                                    var str = "Simple Mode"
+                                    var str = stringResource(R.string.workout_simple)
                                     if(isDetailed.value){
-                                        str = "Detailed Mode"
+                                        str = stringResource(R.string.workout_detailed)
                                     }
                                     Text(str)
                                 }
@@ -123,7 +125,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                             }
                             Row(modifier = Modifier.padding(15.dp, 5.dp)) {
                                 Text(
-                                    text = "by ".plus(workout?.user?.username),
+                                    text = stringResource(R.string.by).plus(workout?.user?.username),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colors.background
@@ -158,7 +160,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                         onClick = {
                                             hasStarted.value = 2
                                         }) {
-                                        Text(text = "Finish Workout",
+                                        Text(text = stringResource(R.string.workout_finish),
                                             fontSize = 30.sp)
                                     }
                                 }
@@ -215,7 +217,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                         )
                                     }
                                 }
-                                Text(text="Workout Finished",
+                                Text(text= stringResource(R.string.workout_finished),
                                     color = MaterialTheme.colors.background)
                                 workout?.name?.let {
                                     Text(
@@ -226,13 +228,13 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                     )
                                 }
                                 Text(
-                                    text = "by ".plus(workout?.user?.username),
+                                    text = stringResource(R.string.by).plus(workout?.user?.username),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colors.background
                                 )
                                 Text(
-                                    text = "Rate the Workout!",
+                                    text = stringResource(R.string.workout_rate),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colors.background
@@ -258,13 +260,14 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                     }
                                 }
                                 val mContext = LocalContext.current
+                                val workout_submitted_review = stringResource(R.string.workout_submitted_review)
                                 Button(
                                     onClick = {
                                         workout?.id?.let { viewModel.makeReview(it,stars.value*2) }
-                                        Toast.makeText(mContext, "Review Submitted", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(mContext, workout_submitted_review , Toast.LENGTH_LONG).show()
                                         navController.navigate("discover")
                                     }) {
-                                    Text(text = "Sumbit Rating",
+                                    Text(text = stringResource(R.string.workout_sumbit_rating),
                                         fontSize = 30.sp,
                                         color = MaterialTheme.colors.background)
                                 }

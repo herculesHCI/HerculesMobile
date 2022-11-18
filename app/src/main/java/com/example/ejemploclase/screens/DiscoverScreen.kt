@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -24,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.ejemploclase.AppBarExpanded
 import com.example.ejemploclase.Filter
+import com.example.ejemploclase.R
 import com.example.ejemploclase.data.model.Workout
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
@@ -32,18 +34,18 @@ import com.example.ejemploclase.ui.main.canGetRoutines
 @Composable
 fun DiscoverScreen(navController: NavHostController,filterName: String? = "Highest Rated",windowSizeClass: WindowSizeClass,viewModel: MainViewModel = viewModel(factory = getViewModelFactory())){
     if(filters.isEmpty()){
-        filters.put("Back",Filter("score","desc",1,"Back Workouts"))
-        filters.put("Legs",Filter("score","desc",2,"Leg Workouts"))
-        filters.put("Push",Filter("score","desc",3,"Push Workouts"))
-        filters.put("Pull",Filter("score","desc",4,"Pull Workouts"))
-        filters.put("Upper",Filter("score","desc",5,"Upper Workouts"))
-        filters.put("Abs",Filter("score","desc",6,"Ab Workouts"))
-        filters.put("Arms",Filter("score","desc",7,"Arm Workouts"))
-        filters.put("Cardio",Filter("score","desc",8,"Cardio Workouts"))
-        filters.put("Full Body",Filter("score","desc",9,"Full Body Workouts"))
-        filters.put("Most Recent", Filter("date","desc",null,"Most Recent Created"))
-        filters.put("Highest Rated", Filter("score","desc",null,"Highest Rated"))
-        filters.put("Oldest Workouts", Filter("date","asc",null,"Oldest Workouts"))
+        filters.put("Back",Filter("score","desc",1, stringResource(R.string.filter_back)))
+        filters.put("Legs",Filter("score","desc",2, stringResource(R.string.filter_leg)))
+        filters.put("Push",Filter("score","desc",3, stringResource(R.string.filter_push)))
+        filters.put("Pull",Filter("score","desc",4, stringResource(R.string.filter_pull)))
+        filters.put("Upper",Filter("score","desc",5, stringResource(R.string.filter_upper)))
+        filters.put("Abs",Filter("score","desc",6, stringResource(R.string.filter_ab)))
+        filters.put("Arms",Filter("score","desc",7, stringResource(R.string.filter_arm)))
+        filters.put("Cardio",Filter("score","desc",8, stringResource(R.string.filter_cardio)))
+        filters.put("Full Body",Filter("score","desc",9, stringResource(R.string.filter_fullbody)))
+        filters.put("Most Recent", Filter("date","desc",null, stringResource(R.string.filter_recent)))
+        filters.put("Highest Rated", Filter("score","desc",null, stringResource(R.string.filter_highest_rated)))
+        filters.put("Oldest Workouts", Filter("date","asc",null, stringResource(R.string.filter_oldest)))
     }
     if(windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium){
         AppBarExpanded(navController) {
@@ -119,7 +121,7 @@ fun WorkoutElement(item: Workout,navController: NavHostController) {
                         fontSize = 12.sp)
                 }
                 Row(){
-                    Text(text= "By ".plus(item.user.username),
+                    Text(text= stringResource(R.string.by).plus(item.user.username),
                         fontSize = 12.sp)
                 }
             }
