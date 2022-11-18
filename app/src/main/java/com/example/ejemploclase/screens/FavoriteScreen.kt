@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +32,7 @@ import com.example.ejemploclase.data.model.Workout
 import com.example.ejemploclase.data.network.util.getViewModelFactory
 import com.example.ejemploclase.ui.main.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.ejemploclase.R
 import com.example.ejemploclase.ui.main.canGetFavourites
 
 
@@ -60,7 +62,7 @@ fun FavoriteContent(navController: NavHostController,viewModel: MainViewModel = 
             .verticalScroll(rememberScrollState())){
             Column(){
                 Row(modifier = Modifier.padding(15.dp)){
-                    Text(text= "Favorite Workouts",
+                    Text(text= stringResource(R.string.fav_workouts),
                         fontSize = 19.sp,
                         fontWeight = FontWeight.Bold)
                 }
@@ -98,7 +100,7 @@ fun WorkoutFavElement(item: Workout,navController: NavHostController,viewModel: 
                         fontSize = 12.sp)
                 }
                 Row(){
-                    Text(text= "By ".plus(item.user.username),
+                    Text(text= stringResource(R.string.by).plus(item.user.username),
                         fontSize = 12.sp)
                 }
             }
@@ -110,9 +112,10 @@ fun WorkoutFavElement(item: Workout,navController: NavHostController,viewModel: 
                         contentDescription = null
                     )
                     val mContext = LocalContext.current
+                    val favRemove = stringResource(R.string.fav_remove)
                     IconButton(onClick = {
                         viewModel.deleteFavorite(item.id)
-                        Toast.makeText(mContext, "Removed from favourites", Toast.LENGTH_LONG).show()
+                        Toast.makeText(mContext, favRemove , Toast.LENGTH_LONG).show()
                     }) {
                         Icon(imageVector = Icons.Default.Favorite,
                             contentDescription = null,
