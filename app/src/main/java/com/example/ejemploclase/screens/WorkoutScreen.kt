@@ -324,7 +324,7 @@ fun Cycle(cycle: Cycle, isDetailed: Boolean){
                     Row(modifier = Modifier.padding(15.dp,3.dp)){
                         var str : String = ""
                         if(isDetailed){
-                             str = "   " + exercise.duration.toString() + " x " + exercise.repetitions.toString() + " rep"
+                             str = "   " + exercise.duration.toString() + "s x " + exercise.repetitions.toString() + " rep"
                         }
 
                         LabelledCheckbox(checked = checkedState.value,
