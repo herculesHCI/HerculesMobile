@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -95,14 +96,15 @@ fun WorkoutFavElement(item: Workout,navController: NavHostController,viewModel: 
                     ClickableText(text= AnnotatedString(item.name) // tiene fontSize = 17.sp
                         ,onClick = {
                             navController.navigate("preview/${item.id}")
-                        } )
+                        },
+                        style = TextStyle(fontSize = 18.sp))
                 }
                 Row(){
                     Text(text= item.category.name,
                         fontSize = 12.sp)
                 }
                 Row(){
-                    Text(text= stringResource(R.string.by).plus(item.user.username),
+                    Text(text= stringResource(R.string.by).plus(" ").plus(item.user.username),
                         fontSize = 12.sp)
                 }
             }

@@ -12,7 +12,7 @@
     <string name="settings_account_confirm">Confirmar logout?</string>
     <string name="settings_logout_cancel">CANCELAR</string>
     <string name="prev_added_fav">Agregaod a los Favoritos</string>
-    <string name="by">\de \ " </string>
+    <string name="by">de </string>
     <string name="prev_err_no_exercises">Este ciclo no posee ningún ejercicio</string>
     <string name="prev_err_no_cycles">Este entrenamiento no posee ningún ciclo</string>
     <string name="prev_err">Parece haber habido un error</string>
