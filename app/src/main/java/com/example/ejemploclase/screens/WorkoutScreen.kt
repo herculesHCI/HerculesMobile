@@ -160,10 +160,13 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                         onClick = {
                                             hasStarted.value = 2
                                         },
+                                        colors = ButtonDefaults.buttonColors(MaterialTheme.colors.secondary),
+                                        modifier = Modifier.padding(10.dp),
+                                        shape = RoundedCornerShape(30.dp)
                                         ) {
                                         Text(text = stringResource(R.string.workout_finish),
                                             fontSize = 30.sp,
-                                        color = Color.Black)
+                                        color = MaterialTheme.colors.background)
                                     }
                                 }
                             }
@@ -265,10 +268,13 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                         workout?.id?.let { viewModel.makeReview(it,stars.value*2) }
                                         Toast.makeText(mContext, workout_submitted_review , Toast.LENGTH_LONG).show()
                                         navController.navigate("discover")
-                                    }) {
+                                    },
+                                    colors = ButtonDefaults.buttonColors(MaterialTheme.colors.secondary),
+                                    modifier = Modifier.padding(10.dp),
+                                    shape = RoundedCornerShape(30.dp)) {
                                     Text(text = stringResource(R.string.workout_sumbit_rating),
                                         fontSize = 30.sp,
-                                        color = Color.Black)
+                                        color = MaterialTheme.colors.background)
                                 }
                             }
                         }
