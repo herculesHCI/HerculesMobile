@@ -14,6 +14,7 @@
     <string name="prev_added_fav">Added to favourites</string>
     <string name="by">by </string>
     <string name="logged_in_as">Logged in as</string>
+    <string name="share_workout">Check out this workout!</string>
     <string name="logout">Logout</string>
     <string name="prev_err_no_exercises">This Cycle doesn\'t have any exercises</string>
     <string name="prev_err_no_cycles">This workout doesn\'t have any cycles</string>

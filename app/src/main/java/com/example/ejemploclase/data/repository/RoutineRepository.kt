@@ -41,15 +41,17 @@ class RoutineRepository(
     suspend fun getCompleteRoutine(routineId: Int) : Workout {
         val workout = remoteDataSource.getRoutine(routineId).asModel()
         val resultCycles = remoteDataSource.getRoutineCycles(routineId)
-        if(resultCycles.size == 0) {
+        if(resultCycles.totalCount == 0) {
             workout.setCycles(null)
             return workout
         }
         val cycles = resultCycles.content.map { it.asModel() }
         for(cycle in cycles) {
             val resultExercises = remoteDataSource.getCycleExercises(cycle.id)
-            val exercises = resultExercises.content.map { it.asModel() }
-            cycle.setExercises(exercises)
+            if(resultExercises.totalCount != 0){
+                val exercises = resultExercises.content.map { it.asModel() }
+                cycle.setExercises(exercises)
+            }
         }
         workout.setCycles(cycles.toTypedArray())
         return workout
