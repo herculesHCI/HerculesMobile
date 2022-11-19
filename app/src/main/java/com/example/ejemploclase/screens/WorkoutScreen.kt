@@ -94,7 +94,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                         text = it,
                                         fontSize = 30.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colors.background
+                                        color = Color.Black
                                     )
                                 }
 
@@ -104,13 +104,14 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                     onClick = {
                                         isDetailed.value = !isDetailed.value
                                     },
-                                    colors = ButtonDefaults.buttonColors(MaterialTheme.colors.secondary)
+                                    colors = ButtonDefaults.buttonColors(MaterialTheme.colors.secondary),
+                                    modifier = Modifier.padding(5.dp)
                                 ){
                                     var str = stringResource(R.string.workout_simple)
                                     if(isDetailed.value){
                                         str = stringResource(R.string.workout_detailed)
                                     }
-                                    Text(str)
+                                    Text(str,color = MaterialTheme.colors.background)
                                 }
                             }
                             Row(modifier = Modifier.padding(15.dp, 5.dp)) {
@@ -119,16 +120,16 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                         text = it,
                                         fontSize = 20.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colors.background
+                                        color = Color.Black
                                     )
                                 }
                             }
                             Row(modifier = Modifier.padding(15.dp, 5.dp)) {
                                 Text(
-                                    text = stringResource(R.string.by).plus(workout?.user?.username),
+                                    text = stringResource(R.string.by).plus(" ").plus(workout?.user?.username),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colors.background
+                                    color = Color.Black
                                 )
                             }
                             Row() {
@@ -154,20 +155,18 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                 }
                             }
                             if(hasStarted.value == 1 ){  //TODO center correctly
-                                Spacer(Modifier.weight(1f))
-                                Row(){
+                                Column(horizontalAlignment = Alignment.CenterHorizontally){
                                     Button(
                                         onClick = {
                                             hasStarted.value = 2
-                                        }) {
+                                        },
+                                        ) {
                                         Text(text = stringResource(R.string.workout_finish),
-                                            fontSize = 30.sp)
+                                            fontSize = 30.sp,
+                                        color = Color.Black)
                                     }
                                 }
-                                Spacer(Modifier.weight(1f))
                             }
-
-
                         }
                         if(hasStarted.value == 2 ){
                             Column(modifier = Modifier
@@ -183,7 +182,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                         Icon(
                                             imageVector = Icons.Default.ArrowBack,
                                             contentDescription = null,
-                                            tint = MaterialTheme.colors.background,
+                                            tint = Color.Black,
                                             modifier = Modifier
                                                 .padding(15.dp)
                                                 .size(40.dp)
@@ -198,7 +197,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                     }) {
                                         Icon(imageVector = Icons.Default.Share,
                                             contentDescription = null,
-                                            tint = Color.White,
+                                            tint = Color.Black,
                                             modifier = Modifier
                                                 .padding(15.dp)
                                                 .size(40.dp)
@@ -210,7 +209,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                         Icon(
                                             imageVector = Icons.Outlined.Close,
                                             contentDescription = null,
-                                            tint = MaterialTheme.colors.background,
+                                            tint = Color.Black,
                                             modifier = Modifier
                                                 .padding(15.dp)
                                                 .size(40.dp)
@@ -218,33 +217,33 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                     }
                                 }
                                 Text(text= stringResource(R.string.workout_finished),
-                                    color = MaterialTheme.colors.background)
+                                    color = Color.Black)
                                 workout?.name?.let {
                                     Text(
                                         text = it,
                                         fontSize = 30.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colors.background
+                                        color = Color.Black
                                     )
                                 }
                                 Text(
-                                    text = stringResource(R.string.by).plus(workout?.user?.username),
+                                    text = stringResource(R.string.by).plus(" ").plus(workout?.user?.username),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colors.background
+                                    color = Color.Black
                                 )
                                 Text(
                                     text = stringResource(R.string.workout_rate),
                                     fontSize = 20.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colors.background
+                                    color = Color.Black
                                 )
                                 Row(){
                                     for( i in 1..5 ){
                                         IconButton(onClick = {
                                             stars.value = i
                                         }) {
-                                            var col = MaterialTheme.colors.background;
+                                            var col = Color.Black;
                                             if (stars.value >= i ) {
                                                 col = MaterialTheme.colors.secondary
                                             }
@@ -269,7 +268,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                     }) {
                                     Text(text = stringResource(R.string.workout_sumbit_rating),
                                         fontSize = 30.sp,
-                                        color = MaterialTheme.colors.background)
+                                        color = Color.Black)
                                 }
                             }
                         }
@@ -280,7 +279,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                         onClick = {
                             hasStarted.value = 1
                         },
-                        backgroundColor = MaterialTheme.colors.primary,
+                        backgroundColor = MaterialTheme.colors.secondary,
                         contentColor = MaterialTheme.colors.background,
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
@@ -288,8 +287,6 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                             .padding(horizontal = 15.dp)
                             .size(65.dp)
                     ) {
-                        // on below line we are
-                        // adding icon for button.
                         Icon(
                             imageVector = Icons.Default.PlayArrow,
                             contentDescription = null,

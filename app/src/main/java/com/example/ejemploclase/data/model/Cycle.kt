@@ -1,7 +1,7 @@
 package com.example.ejemploclase.data.model
 
 import com.example.ejemploclase.data.model.Exercise
-//id,name,detail,type,order,repetitions
+
 data class Cycle (
         var id: Int,
         var name: String,

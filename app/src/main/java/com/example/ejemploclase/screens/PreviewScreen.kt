@@ -50,7 +50,6 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
             }
         }
         if(viewModel.uiState.canGetRoutine){
-            val isFav = workout?.let { viewModel.isFavourite(it) }
             Box( modifier = Modifier.background(MaterialTheme.colors.background)){
                 Row(){
                     IconButton(onClick = {
@@ -115,7 +114,8 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                 Text(
                                     text= it,
                                     fontSize = 35.sp,
-                                    fontWeight = FontWeight.Bold
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black
                                 )
                             }
                             Spacer( modifier = Modifier
@@ -124,14 +124,16 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                 modifier = Modifier.padding(top=7.dp),
                                 text= workout?.getScore().toString(),
                                 fontSize = 25.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
                             )
                             Icon(
-                                imageVector = Icons.Default.Star,
+                                imageVector = Icons.Default.StarBorder,
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(40.dp)
                                     .padding(top = 5.dp),
+                                tint = Color.Black
                             )
                         }
                         val let = workout?.category?.let { //Se hizo el chequeo antes
@@ -139,14 +141,16 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                 modifier = Modifier.padding(top = 7.dp),
                                 text = it.name,
                                 fontSize = 25.sp,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
                             )
                         }
                         Text(
-                            text = stringResource(R.string.by) + workout?.user?.username,
+                            text = stringResource(R.string.by) + " " + workout?.user?.username,
                             fontSize = 25.sp,
                             fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(vertical = 10.dp)
+                            modifier = Modifier.padding(vertical = 10.dp),
+                            color = Color.Black
                         )
                         if (workout != null) {
                             if(workout.hasCycles()){
@@ -159,13 +163,15 @@ fun PreviewContent(navController: NavHostController,workoutId : Int?,viewModel: 
                                         Text(
                                             text = cyc.name,
                                             fontSize = 22.sp,
-                                            fontWeight = FontWeight.Medium
+                                            fontWeight = FontWeight.Medium,
+                                            color = Color.Black
                                         )
                                         if(cyc.hasExercises()){
                                             cyc.getExercises()?.forEach(){ ex ->
                                                 Text(
                                                     text = ex.baseExercise.name,
                                                     fontSize = 20.sp,
+                                                    color = Color.Black
                                                 )
                                             }
                                         } else {
