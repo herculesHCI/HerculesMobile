@@ -30,6 +30,7 @@ fun ErrorMessage(message: String){
             imageVector = Icons.Default.Checklist,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
+            tint = Color.Black
         )
     }
 }
