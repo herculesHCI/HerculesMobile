@@ -89,29 +89,15 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                 modifier = Modifier.padding(15.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                workout?.name?.let {
-                                    Text(
-                                        text = it,
-                                        fontSize = 30.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color.Black
-                                    )
-                                }
-
-                                Spacer(Modifier.weight(1f))
-
-                                Button(
-                                    onClick = {
-                                        isDetailed.value = !isDetailed.value
-                                    },
-                                    colors = ButtonDefaults.buttonColors(MaterialTheme.colors.secondary),
-                                    modifier = Modifier.padding(5.dp)
-                                ){
-                                    var str = stringResource(R.string.workout_simple)
-                                    if(isDetailed.value){
-                                        str = stringResource(R.string.workout_detailed)
+                                Column() {
+                                    workout?.name?.let {
+                                        Text(
+                                            text = it,
+                                            fontSize = 30.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.Black
+                                        )
                                     }
-                                    Text(str,color = MaterialTheme.colors.background)
                                 }
                             }
                             Row(modifier = Modifier.padding(15.dp, 5.dp)) {
@@ -131,6 +117,24 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                     fontWeight = FontWeight.Bold,
                                     color = Color.Black
                                 )
+                            }
+                            Row(
+                                modifier = Modifier.padding(15.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ){
+                                Button(
+                                    onClick = {
+                                        isDetailed.value = !isDetailed.value
+                                    },
+                                    colors = ButtonDefaults.buttonColors(MaterialTheme.colors.secondary),
+                                    modifier = Modifier.padding(5.dp)
+                                ){
+                                    var str = stringResource(R.string.workout_simple)
+                                    if(isDetailed.value){
+                                        str = stringResource(R.string.workout_detailed)
+                                    }
+                                    Text(str,color = MaterialTheme.colors.background)
+                                }
                             }
                             Row() {
                                 Column {
@@ -154,7 +158,7 @@ fun WorkoutContent(workoutId: Int, navController: NavHostController, viewModel: 
                                     }
                                 }
                             }
-                            if(hasStarted.value == 1 ){  //TODO center correctly
+                            if(hasStarted.value == 1 ){
                                 Column(horizontalAlignment = Alignment.CenterHorizontally){
                                     Button(
                                         onClick = {
